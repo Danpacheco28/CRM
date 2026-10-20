@@ -1,5 +1,10 @@
 async(page)=>{
   if(!page.url().startsWith('http://127.0.0.1:4174'))throw Error('Use somente a versão de testes local.');
+  await page.goto('http://127.0.0.1:4174/#pipelines');
+  await page.reload();
+  // The CLI tracks native file choosers separately. Supply files directly to
+  // inputs below and suppress only the native chooser in this test profile.
+  await page.evaluate(()=>{window.testOriginalFileClick=HTMLInputElement.prototype.click;HTMLInputElement.prototype.click=function(){if(this.type!=='file')return window.testOriginalFileClick.call(this);};});
   const check=(value,message)=>{if(!value)throw Error(message);};
   const click=name=>page.getByRole('button',{name,exact:true}).click();
   await click('Projeto Verificação');
@@ -22,5 +27,6 @@ async(page)=>{
   await page.waitForTimeout(100);check((await page.locator('#toast').innerText()).includes('Backup recusado'),'Invalid backup rejected');
   check(await page.evaluate(()=>JSON.parse(localStorage.getItem('crm-workspace-v2')).deals.length)===before.deals.length,'Rejected backup preserves data');
   const pages=['leads','aftersale','calendar','reports','documents'];for(const route of pages){await page.goto('http://127.0.0.1:4174/#'+route);check((await page.locator('#content').innerText()).length>20,'Module rendered: '+route);}
+  await page.evaluate(()=>{HTMLInputElement.prototype.click=window.testOriginalFileClick;delete window.testOriginalFileClick;});
   return 'PASS: attachment add/remove, CSV import preview/commit, JSON restore roundtrip, malformed backup rejection, CRM modules rendered. Test data remains in local isolated browser only.';
 }

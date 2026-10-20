@@ -2,7 +2,7 @@
 
 ## Modelo de dados
 
-`node --test model.test.mjs`: 12 testes passaram.
+`node --test model.test.mjs`: 13 testes passaram.
 
 - Migração dos contatos/etapas da versão anterior, inclusive negócios perdidos.
 - Dados legados inválidos preservados, sem sobrescrita automática.
@@ -15,6 +15,7 @@
 - Backup com identificador inseguro ou etapa inexistente é rejeitado.
 - CSV com aspas/separadores e moeda brasileira; atualização por SKU.
 - CSV inválido em linha posterior não faz gravação parcial.
+- Importação não combina documentos diferentes/inválidos apenas por compartilharem email.
 
 ## Navegador
 
