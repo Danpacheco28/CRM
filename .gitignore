@@ -1,0 +1,12 @@
+# Local tooling, browser sessions and generated artifacts
+node_modules/
+output/
+.playwright-cli/
+playwright-report/
+test-results/
+.env
+.env.*
+!.env.example
+*.log
+.DS_Store
+Thumbs.db
