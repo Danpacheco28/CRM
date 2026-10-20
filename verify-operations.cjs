@@ -1,0 +1,34 @@
+async(page)=>{
+  if(!page.url().startsWith('http://127.0.0.1:4175'))throw Error('Use somente o perfil local descartável na porta 4175.');
+  const check=(ok,msg)=>{if(!ok)throw Error(msg);};
+  const click=async name=>{const scope=await page.locator('#editor[open]').count()?page.locator('#editor'):page;await scope.getByRole('button',{name,exact:true}).click();};
+  const field=(name,value)=>page.locator('#field-'+name).fill(value);
+  const select=(name,value)=>page.locator('#field-'+name).selectOption(value);
+  const save=()=>click('Salvar');
+  const nav=async route=>{await page.evaluate(route=>location.hash=route,route);await page.waitForTimeout(100);};
+  const state=()=>page.evaluate(()=>JSON.parse(localStorage.getItem('crm-workspace-v2')));
+  const errors=[];page.on('pageerror',e=>errors.push(e.message));
+  await click('＋ Negócio');await field('title','Negócio operações QA');await field('quickContact','Contato operações QA');await field('value','1500');await save();
+  await nav('contacts');await click('Contato operações QA');await click('Editar contato');await field('email','qa@example.test');await save();
+  if(await page.locator('#editor[open]').count())await click('Fechar');
+  await nav('projects');await click('＋ Projeto');await field('name','Organização QA');await save();
+  await nav('activities');await click('＋ Atividade');await field('title','Tarefa semanal QA');await select('recurrence','weekly');await select('projectId',{label:'Organização QA'});await field('checklistText','Preparar pauta\nConferir dados');await save();
+  await click('Tarefa semanal QA');await page.locator('[data-op-check]').first().check();await click('Concluir');
+  let s=await state();check(s.activities.filter(a=>a.title==='Tarefa semanal QA').length===2,'Recorrência cria próxima ocorrência');check(s.activities.some(a=>a.checklist?.some(c=>c.done)),'Checklist persistido');
+  await click('Quadro');check(await page.locator('[data-op-task-status]').count()===2,'Quadro de tarefas');
+  await nav('bookings');await click('Disponibilidade');await click('＋ Tipo de reunião');await field('name','Diagnóstico QA');for(const el of await page.locator('[data-booking-day]').all())await el.check();await save();await click('Fechar');
+  const future=new Date();future.setDate(future.getDate()+3);const day=[future.getFullYear(),String(future.getMonth()+1).padStart(2,'0'),String(future.getDate()).padStart(2,'0')].join('-');
+  await click('＋ Agendamento');await field('title','Reunião QA');await field('start',day+'T14:00');await select('contactId',{label:'Contato operações QA'});await save();
+  s=await state();check(s.bookings.length===1&&s.activities.some(a=>a.id===s.bookings[0].activityId),'Agendamento vinculado');
+  await click('＋ Agendamento');await field('title','Conflito QA');await field('start',day+'T14:00');await select('contactId',{label:'Contato operações QA'});await save();check((await state()).bookings.length===1,'Conflito sem gravação');await click('Cancelar');
+  await nav('journeys');await click('＋ Jornada');await field('name','Jornada QA');await select('status','ativa');await page.locator('[data-step-field=title]').fill('Follow-up da jornada QA');await save();await click('Inscrever');await select('dealId',{label:'Negócio operações QA'});await page.locator('#field-confirm').check();await save();
+  s=await state();check(s.enrollments.length===1&&s.activities.some(a=>a.title==='Follow-up da jornada QA'),'Jornada executa tarefa');
+  await click('Execuções');await click('Histórico');check(await page.locator('.timeline').innerText().then(t=>t.length>10),'Histórico de execução');await click('Voltar às execuções');await click('Fechar');
+  await nav('campaigns');await click('＋ Campanha');await field('name','Campanha QA');await field('senderName','Equipe QA');await field('senderEmail','equipe@example.test');await field('subject','Olá {{nome}}');await field('body','Conteúdo sintético para {{nome}}.');await save();await click('Campanha QA');await click('Preparar destinatários');await page.locator('#field-confirm').check();await save();
+  s=await state();check(s.deliveries.length===1&&s.deliveries[0].status==='pendente','Campanha prepara sem enviar');await click('Registrar envio manual');await page.locator('#field-confirm').check();await save();check((await state()).deliveries[0].status==='manual','Registro manual de envio');await click('Fechar');
+  await nav('dashboards');await click('＋ Dashboard');await field('name','Operação QA');await save();check((await state()).dashboards.length===1,'Dashboard salvo');
+  await nav('reports');await page.locator('#opReportMetric').selectOption('taskCompleted');await click('Salvar configuração');await field('name','Atividades QA');await save();check((await state()).reportPresets.length===1,'Relatório salvo');
+  await nav('goals');await click('＋ Meta');await field('name','Concluir tarefas QA');await select('metric','taskCompleted');await field('target','5');await save();check((await state()).goals.length===1,'Meta salva');
+  await page.reload();check((await state()).projects.length===1,'Dados persistem na recarga');check(errors.length===0,'Erros JavaScript: '+errors.join(';'));
+  console.log(JSON.stringify({result:'PASS',projects:1,recurrence:true,bookingConflict:true,journey:true,campaignPrepared:true,manualSent:true,dashboard:true,report:true,goal:true,errors}));
+}

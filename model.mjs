@@ -1,11 +1,12 @@
-﻿export const STORAGE_KEY = 'crm-workspace-v2';
+import {normalizeOperations,validateOperations,guardOperationsDelete,processOperations} from './operations-model.mjs?v=20261020-3';
+export const STORAGE_KEY = 'crm-workspace-v2';
 export const LEGACY_KEY = 'crm-funil-v1';
 export const uid = () => crypto.randomUUID();
 export const today = () => { const d=new Date(); return `${d.getFullYear()}-${String(d.getMonth()+1).padStart(2,'0')}-${String(d.getDate()).padStart(2,'0')}`; };
 const originalStages=['Apresentação','Envio de proposta comercial','Reunião de fechamento','Assinatura de proposta','Pedido emitido'];
 export function newPipeline(name,type,names=['Entrada','Em andamento','Conclusão']) { return {id:uid(),name,type,stages:names.map((name,i)=>({id:uid(),name,probability:Math.round((i+1)/names.length*100)}))}; }
 export function emptyState() {
-  return {schema:2,revision:0,savedAt:'',pipelines:[newPipeline('Pipeline de Vendas','opportunity',originalStages),newPipeline('Qualificação de Leads','lead',['Novo lead','Contato inicial','Qualificação']),newPipeline('Pós-venda','aftersale',['Boas-vindas','Acompanhamento','Renovação'])],contacts:[],deals:[],activities:[],products:[],priceLists:[],quotes:[],orders:[],history:[],settings:{origins:['Indicação','Site','Prospecção','Redes sociais'],lossReasons:['Sem orçamento','Sem retorno','Concorrência','Sem interesse'],tags:[],customFields:[]},templates:[{id:uid(),name:'Proposta comercial',type:'Proposta',body:'Olá, {{cliente}}.\n\nApresentamos nossa proposta para {{negocio}}.\n\n{{itens}}\n\nTotal: {{total}}\nValidade: {{validade}}\n\nCondições e observações:\n{{observacoes}}'}]};
+  return normalizeOperations({schema:2,revision:0,savedAt:'',pipelines:[newPipeline('Pipeline de Vendas','opportunity',originalStages),newPipeline('Qualificação de Leads','lead',['Novo lead','Contato inicial','Qualificação']),newPipeline('Pós-venda','aftersale',['Boas-vindas','Acompanhamento','Renovação'])],contacts:[],deals:[],activities:[],products:[],priceLists:[],quotes:[],orders:[],history:[],settings:{origins:['Indicação','Site','Prospecção','Redes sociais'],lossReasons:['Sem orçamento','Sem retorno','Concorrência','Sem interesse'],tags:[],customFields:[]},templates:[{id:uid(),name:'Proposta comercial',type:'Proposta',body:'Olá, {{cliente}}.\n\nApresentamos nossa proposta para {{negocio}}.\n\n{{itens}}\n\nTotal: {{total}}\nValidade: {{validade}}\n\nCondições e observações:\n{{observacoes}}'}]});
 }
 export function migrateLegacy(raw) {
   const state=emptyState(); if(!Array.isArray(raw)) throw Error('Formato antigo inválido. Exporte os dados antes de continuar.');
@@ -24,6 +25,7 @@ export function quoteTotal(q) {
 }
 export function validateState(s) {
   requireValue(s&&s.schema===2&&Number.isInteger(s.revision)&&s.revision>=0,'Backup incompatível: versão ou revisão inválida.');
+  normalizeOperations(s);
   for(const key of ['pipelines','contacts','deals','activities','products','priceLists','quotes','orders','history','templates']) {
     requireValue(Array.isArray(s[key])&&s[key].length<=50000,`Coleção inválida: ${key}.`);
     const ids=new Set(); for(const row of s[key]){requireValue(row&&identifier(row.id)&&!ids.has(row.id),`Identificador inválido ou duplicado em ${key}.`);ids.add(row.id);}
@@ -47,7 +49,7 @@ export function validateState(s) {
   for(const k of ['origins','lossReasons','tags']) requireValue(s.settings[k].every(v=>text(v,300)),'Cadastro auxiliar inválido.');
   const fields=new Set();for(const f of s.settings.customFields){requireValue(identifier(f.id)&&!fields.has(f.id)&&text(f.name,100)&&f.name.trim()&&['text','number','date'].includes(f.type),'Campo personalizado inválido.');fields.add(f.id);}
   for(const t of s.templates)requireValue(text(t.name,150)&&t.name.trim()&&text(t.body,30000),'Modelo de documento inválido.');
-  return true;
+  validateOperations(s); return true;
 }
 export function audit(s,entityId,message,kind='deal') {s.history.push({id:uid(),entityId,kind,message,at:new Date().toISOString()});}
 export function saveEntity(s,collection,record) {
@@ -58,15 +60,18 @@ export function saveEntity(s,collection,record) {
 }
 export function configurePipeline(s,pipeline,mapping={}) {
   const old=s.pipelines.find(p=>p.id===pipeline.id);
+  if(old){const removed=old.stages.filter(st=>!pipeline.stages.some(next=>next.id===st.id)).map(st=>st.id);requireValue(!s.journeys.some(j=>j.pipelineId===old.id&&removed.includes(j.stageId)||j.steps.some(st=>st.type==='move'&&st.pipelineId===old.id&&removed.includes(st.stageId))),'Esta etapa é usada em uma jornada. Atualize o gatilho ou a ação da jornada antes de removê-la.');}
   if(old){for(const d of s.deals.filter(d=>d.pipelineId===old.id)){if(!pipeline.stages.some(st=>st.id===d.stageId)){const target=mapping[d.stageId];requireValue(pipeline.stages.some(st=>st.id===target),'Escolha a etapa de destino para os negócios das etapas removidas.');d.stageId=target;audit(s,d.id,'Etapa transferida após configuração do pipeline.','deals');}}s.pipelines=s.pipelines.map(p=>p.id===pipeline.id?pipeline:pipeline.id===p.id?pipeline:p);}else s.pipelines.push(pipeline);
   audit(s,pipeline.id,`Pipeline configurado: ${pipeline.name}`,'pipelines');
 }
 export function deletePipeline(s,id,targetId) {
+  requireValue(!s.journeys.some(j=>j.pipelineId===id||j.steps.some(st=>st.type==='move'&&st.pipelineId===id))&&!s.goals.some(g=>g.pipelineId===id),'Este pipeline está vinculado a jornadas ou metas. Atualize esses vínculos antes de excluí-lo.');
   requireValue(s.pipelines.length>1,'Não é possível excluir o último pipeline.');const target=s.pipelines.find(p=>p.id===targetId&&p.id!==id);const linked=s.deals.filter(d=>d.pipelineId===id);
   requireValue(!linked.length||target,'Selecione outro pipeline para receber os negócios.');
   for(const d of linked){d.pipelineId=target.id;d.stageId=target.stages[0].id;audit(s,d.id,`Transferido para ${target.name} após exclusão de pipeline.`,'deals');}s.pipelines=s.pipelines.filter(p=>p.id!==id);
 }
 export function deleteEntity(s,collection,id) {
+  guardOperationsDelete(s,collection,id);
   const used=(list,key)=>s[list].some(r=>r[key]===id);
   if(collection==='contacts')requireValue(!['organizationId','personId'].some(k=>used('deals',k))&&!used('contacts','organizationId')&&!used('activities','contactId')&&!used('quotes','contactId')&&!used('orders','contactId'),'Este contato está vinculado a outros registros. Remova os vínculos ou marque-o como inativo.');
   if(collection==='deals')requireValue(!used('activities','dealId')&&!used('quotes','dealId')&&!used('orders','dealId'),'Este negócio possui atividades, orçamentos ou pedidos. Remova os vínculos antes de excluir.');
@@ -80,7 +85,7 @@ export function convertQuoteToOrder(s,id) {
 }
 export function commit(storage,previous,mutate) {
   const current=storage.getItem(STORAGE_KEY);if(current&&JSON.parse(current).revision!==previous.revision)throw Error('Os dados mudaram em outra aba. Recarregue antes de salvar.');
-  const next=structuredClone(previous);const result=mutate(next);next.revision=previous.revision+1;next.savedAt=new Date().toISOString();validateState(next);storage.setItem(STORAGE_KEY,JSON.stringify(next));return {state:next,result};
+  const next=structuredClone(previous);const result=mutate(next);next.revision=previous.revision+1;next.savedAt=new Date().toISOString();processOperations(next,previous,next.savedAt);validateState(next);storage.setItem(STORAGE_KEY,JSON.stringify(next));return {state:next,result};
 }
 export function parseCsv(input){
   const source=input.replace(/^\uFEFF/,'');const first=source.split(/\r?\n/)[0];const delimiter=first.includes(';')?';':',';const rows=[];let row=[],cell='',quoted=false;

@@ -65,16 +65,29 @@ O botão CSV exporta os registros filtrados do módulo atual. Campos iniciados p
 
 ## Publicar no GitHub Pages
 
-Arquivos necessários: `index.html`, `styles.css`, `app.js` e **`model.mjs`**. Envie-os na raiz junto de `.nojekyll`. O servidor Node é apenas para uso local.
+Arquivos necessários: `index.html`, `styles.css`, `app.js` e **`model.mjs`, `operations-model.mjs` e `operations-ui.mjs`**. Envie-os na raiz junto de `.nojekyll`. O servidor Node é apenas para uso local.
 
 Em **Settings → Pages**, mantenha **Deploy from a branch → main → /(root)**. O site já usa caminhos relativos para funcionar no subdiretório `/CRM/`. Não enviar sessões de navegador, exportações de clientes, credenciais ou a pasta de memória junto do código.
 
 ## Verificação
 
-Execute `node --test model.test.mjs`. Os roteiros `verify-v2.cjs` e `verify-files.cjs` são expressões para `playwright-cli run-code`, não programas Node independentes. Usar apenas em perfis locais descartáveis na porta 4174; criam registros sintéticos. Veja `VALIDATION.md`.
+Execute `node --test model.test.mjs operations.test.mjs` (27 testes). Os roteiros `verify-v2.cjs` e `verify-files.cjs` são expressões para `playwright-cli run-code`, não programas Node independentes. Usar apenas em perfis locais descartáveis na porta 4174; criam registros sintéticos. Veja `VALIDATION.md`.
+
+## Organização, automação e gestão
+
+- **Meu trabalho e projetos:** prazos, responsável, progresso e tarefas vinculadas. Projetos podem ser concluídos ou arquivados.
+- **Atividades:** lista e quadro, prioridade, checklist, filtros, vínculo com contato/negócio/projeto e repetição diária, semanal ou mensal. Concluir cria uma próxima ocorrência, sem duplicação. Agenda ICS com lembrete para importação em outro calendário.
+- **Calendário e agendamentos:** dia/semana/mês, tipos de reunião, disponibilidade por responsável/dias/expediente, duração e intervalo de segurança. Agendamentos criam atividades e rejeitam conflitos. Cadastro interno; ainda sem página pública de autoagendamento.
+- **Jornadas:** gatilhos por criação, ganho ou entrada de etapa, além de inscrição manual; filtros, condições, esperas, tarefas, tags, mudança de etapa e preparação de destinatário de campanha. Modelos, ordenação de passos, duplicação, pausa e histórico. Execuções mantêm cópia dos passos. Ativação não inscreve negócios antigos automaticamente. Mudanças de etapa executadas pela jornada não disparam outras jornadas em cascata.
+- **Campanhas:** conteúdo com variáveis, segmentação, público deduplicado, descadastros, programação da preparação, fila, exportação CSV e rascunho `.eml`. Envio é externo e seu registro é manual; preparar não significa enviar. Não há rastreamento de abertura ou entrega.
+- **Gestão:** dashboards com indicadores selecionáveis, filtros por período/responsável/pipeline, relatórios agrupados e configurações salvas, CSV e metas totais/semanais/mensais com progresso calculado a partir dos registros.
+
+A fila local é verificada a cada 30 segundos com o aplicativo aberto e ao reabrir; datas vencidas são processadas nesse momento. Navegador fechado ou suspenso não executa automações. Para envios reais e execução contínua será necessário conectar backend e provedor de email.
+
+O roteiro `verify-operations.cjs` usa um perfil local descartável na porta 4175. Ele cria somente dados sintéticos e não envia mensagens.
 
 ## Limites desta versão
 
-Este CRM continua sem backend, login/permissões de servidor, sincronização, criptografia de banco, auditoria imutável, envio de email/WhatsApp, automações, captação pública, integração de agenda, assinatura eletrônica ou importação do Drive. A visão geral não implementa metas nem dashboards personalizados completos do sistema original. Não há cálculo fiscal, emissão de documentos fiscais, controle real de estoque ou cobrança recorrente automática. Status de envio/visualização são manuais.
+Dados permanecem no localStorage de cada navegador. Use backup JSON para proteger e transferir toda a base, incluindo os novos módulos. Bases anteriores v2 são normalizadas sem perder os registros existentes.
 
-O foco desta entrega é ampliar a **área CRM funcional no navegador**, com integridade dos vínculos. Recursos de outros grupos do levantamento (marketing, prospecção, comunicação, IA e administração multiusuário) exigem escopo e serviços próprios.
+Sem backend, login/permissões de servidor, sincronização multiusuário, envio de email/WhatsApp, captação pública, integração bidirecional de agenda, assinatura eletrônica ou importação do Drive. Não há cálculo fiscal, emissão fiscal, controle real de estoque ou cobrança recorrente automática. Agentes de IA não fazem parte desta entrega.

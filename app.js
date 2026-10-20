@@ -1,4 +1,5 @@
-import {STORAGE_KEY,LEGACY_KEY,uid,today,emptyState,loadState,validateState,commit,newPipeline,configurePipeline,deletePipeline,saveEntity,deleteEntity,audit,quoteTotal,convertQuoteToOrder,parseCsv,importCsvRows} from './model.mjs';
+import {createOperationsUI} from './operations-ui.mjs?v=20261020-3';
+import {STORAGE_KEY,LEGACY_KEY,uid,today,emptyState,loadState,validateState,commit,newPipeline,configurePipeline,deletePipeline,saveEntity,deleteEntity,audit,quoteTotal,convertQuoteToOrder,parseCsv,importCsvRows} from './model.mjs?v=20261020-3';
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n||0);
@@ -12,6 +13,12 @@ const nav=[['pipelines','▥','Pipelines','Negócios organizados do seu jeito.']
 let state,locked=false,loadError='',timer,route='pipelines',query='',pageNumber=1,view='board',contactType='organization',filters={},showFilters=false,selected=new Set(),currentRows=[],calendarMonth=today().slice(0,7),pipelineId='',pipelineDraft,quoteDraft,dialogContext;
 try{state=loadState(localStorage);}catch(e){state=emptyState();locked=true;loadError=`Não foi possível abrir os dados: ${e.message} O armazenamento original foi preservado. Exporte-o antes de restaurar um backup.`;}
 pipelineId=state.pipelines[0].id;
+const operations=createOperationsUI({$,esc,button,field,options,table,formDialog,openDialog,closeDialog,change,notify,money,date,download,uid,today,toolbar,getState:()=>state,getQuery:()=>query,setRows:rows=>{currentRows=rows;},render,resetPage:()=>{pageNumber=1;},isLocked:()=>locked});
+nav.push(...operations.nav);
+const moduleOrder=['work','projects','activities','calendar','bookings','pipelines','leads','aftersale','contacts','products','quotes','orders','documents','journeys','campaigns','dashboards','reports','goals','settings'];
+nav.sort((a,b)=>moduleOrder.indexOf(a[0])-moduleOrder.indexOf(b[0]));
+nav.find(item=>item[0]==='reports')[2]='Relatórios';
+nav.find(item=>item[0]==='reports')[3]='Consultas, agrupamentos e relatórios salvos.';
 function notify(text){$('#toast').textContent=text;$('#toast').hidden=false;clearTimeout(timer);timer=setTimeout(()=>$('#toast').hidden=true,5000);}
 function change(fn,message='Alterações salvas.'){if(locked){notify('Os dados estão protegidos após erro de leitura. Restaure um backup válido.');return false;}try{const result=commit(localStorage,state,fn);state=result.state;render();if(message)notify(message);return result.result??true;}catch(e){const error=$('#formError');if(error)error.textContent=e.message;else notify(e.message);return false;}}
 function button(label,action,id='',cls=''){return `<button type="button" data-action="${esc(action)}" data-id="${esc(id)}" class="${cls}">${esc(label)}</button>`;}
@@ -35,7 +42,7 @@ function parseTags(v){return [...new Set(String(v||'').split(',').map(v=>v.trim(
 function formSearchRows(rows){return rows.filter(r=>!query||matches(JSON.stringify(r),query));}
 function render(){
   const meta=nav.find(n=>n[0]===route)||nav[0];$('#navigation').innerHTML=nav.map(n=>`<a href="#${n[0]}" ${n[0]===route?'aria-current="page"':''}><span class="navicon" aria-hidden="true">${n[1]}</span>${n[2]}</a>`).join('');$('#breadcrumb').textContent=`CRM / ${meta[2]}`;$('#pageTitle').textContent=meta[2];$('#pageDescription').textContent=meta[3];document.title=`${meta[2]} · CRM`;$('#alert').hidden=!locked;$('#alert').textContent=loadError;$('#pageActions').innerHTML='';
-  const views={pipelines:renderDeals,leads:renderDeals,aftersale:renderDeals,contacts:renderContacts,activities:renderActivities,calendar:renderCalendar,products:renderProducts,quotes:renderQuotes,orders:renderOrders,documents:renderDocuments,reports:renderReports,settings:renderSettings};(views[route]||renderDeals)();$('#content').insertAdjacentHTML('beforeend',`<datalist id="tagSuggestions">${state.settings.tags.map(t=>`<option value="${esc(t)}"></option>`).join('')}</datalist>`);if(['contacts','products'].includes(route))$('#pageActions').insertAdjacentHTML('afterbegin',button('Importar CSV','csvImport'));
+  const views={pipelines:renderDeals,leads:renderDeals,aftersale:renderDeals,contacts:renderContacts,activities:renderActivities,calendar:renderCalendar,products:renderProducts,quotes:renderQuotes,orders:renderOrders,documents:renderDocuments,reports:renderReports,settings:renderSettings,...operations.views};(views[route]||renderDeals)();$('#content').insertAdjacentHTML('beforeend',`<datalist id="tagSuggestions">${state.settings.tags.map(t=>`<option value="${esc(t)}"></option>`).join('')}</datalist>`);if(['contacts','products'].includes(route))$('#pageActions').insertAdjacentHTML('afterbegin',button('Importar CSV','csvImport'));
 }
 function filteredDeals(){const type=route==='leads'?'lead':route==='aftersale'?'aftersale':null;let p=state.pipelines.find(p=>p.id===pipelineId&&(!type||p.type===type));if(!p)p=state.pipelines.find(p=>!type||p.type===type);if(!p)return [];pipelineId=p.id;
   return state.deals.filter(d=>d.pipelineId===p.id&&(!filters.status||filters.status==='todos'||d.status===filters.status)&&(!query||matches([d.title,contactName(d.organizationId),contactName(d.personId),d.owner,...d.tags].join(' '),query))&&(!filters.owner||matches(d.owner,filters.owner))&&(!filters.origin||d.origin===filters.origin)&&(!filters.tag||d.tags.some(t=>matches(t,filters.tag)))&&(!filters.temperature||d.temperature===filters.temperature)&&(!filters.from||d.created.slice(0,10)>=filters.from)&&(!filters.to||d.created.slice(0,10)<=filters.to));}
@@ -115,6 +122,7 @@ function boot(){
     deleteEntity:key=>{const [collection,id]=key.split(':');formDialog('Excluir registro',`<p class="notice">O registro será excluído apenas se não houver vínculos que precisem ser preservados.</p>${field('confirmed','Confirmo a exclusão deste registro',false,{type:'checkbox',required:true})}`,()=>{if(change(s=>deleteEntity(s,collection,id),'Registro excluído.'))closeDialog();});},
     prevPage:()=>{pageNumber=Math.max(1,pageNumber-1);render();},nextPage:()=>{pageNumber++;render();}
   };
+  Object.assign(actions,operations.actions);
   document.addEventListener('click',e=>{const b=e.target.closest('[data-action]');if(b&&!b.disabled){try{actions[b.dataset.action]?.(b.dataset.id);}catch(error){notify(error.message);}}});
   document.addEventListener('input',e=>{if(e.target.id==='search'){const caret=e.target.selectionStart;query=e.target.value;pageNumber=1;render();$('#search')?.focus();$('#search')?.setSelectionRange(caret,caret);}});
   document.addEventListener('change',e=>{const el=e.target;
@@ -137,7 +145,7 @@ function boot(){
   $('#navigation').onclick=()=>{$('#sidebar').classList.remove('open');$('#menuToggle').setAttribute('aria-expanded','false');};
   $('#restoreFile').onchange=e=>restoreFile(e.target.files[0]);
   window.addEventListener('hashchange',navigate);window.addEventListener('storage',e=>{if(e.key===STORAGE_KEY){locked=true;loadError='Os dados foram alterados em outra aba. Recarregue esta página antes de continuar para evitar substituir alterações.';render();}});
-  navigate();
+  navigate();operations.onBoot();
 }
 function reorderStage(id,direction){syncStages();const index=pipelineDraft.stages.findIndex(s=>s.id===id),target=index+direction;if(target<0||target>=pipelineDraft.stages.length)return;[pipelineDraft.stages[index],pipelineDraft.stages[target]]=[pipelineDraft.stages[target],pipelineDraft.stages[index]];renderStageEditor();}
 function moveDeal(id,stageId){const row=state.deals.find(d=>d.id===id),p=row&&pipeline(row);if(!p?.stages.some(s=>s.id===stageId))return;change(s=>{const d=s.deals.find(d=>d.id===id);d.stageId=stageId;d.updated=new Date().toISOString();audit(s,id,`Movido para ${p.stages.find(st=>st.id===stageId).name}.`,'deals');},'Negócio movido.');}

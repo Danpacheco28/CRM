@@ -14,3 +14,7 @@ Sem autenticação, autorização no servidor, backend compartilhado, sincroniza
 Screenshot: ../../output/playwright/leads2b-funil.png. Funil original sem negócios; cartões preenchidos, edição, valores e status são implementações propostas, não comportamentos confirmados do original.
 ## Open Decisions
 Nome definitivo, banco compartilhado, usuários/permissões, integrações e automações de comunicação. Essas áreas não estão implementadas como serviços nesta versão.
+
+## Ampliação confirmada — organização, automação e gestão
+Projetos, Meu trabalho, tarefas com checklist/prioridade/recorrência, calendário dia/semana/mês e agendamento interno com disponibilidade e validação de conflitos. Jornadas locais com gatilhos, condições, esperas, ações, pausa e histórico; campanhas com segmentação, preparação programada, descadastros e registro manual. Dashboards personalizáveis, relatórios configuráveis e metas por vigência/semanal/mensal calculados dos dados reais. Sem agentes de IA.
+Execução de jornadas e preparação programada ocorre apenas com o aplicativo aberto ou na reabertura. Campanhas não enviam mensagens: produzem fila local e rascunhos .eml. Backend/provedor e página pública de autoagendamento continuam pendentes.

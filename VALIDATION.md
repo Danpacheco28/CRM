@@ -41,3 +41,13 @@ Roteiro adicional de arquivos exercitou adicionar/remover anexo, prévia/importa
 ## Limites da validação
 
 Não representa validação de servidor, segurança multiusuário, integrações ou equivalência total ao Leads2b. Não foram testados navegadores além do Chromium nem tecnologias assistivas reais. Movimentação foi exercitada pelo seletor; arraste não foi automatizado. Valores, categorias e contatos usados nos testes são sintéticos e não integram o código publicado.
+
+## Organização, automação e gestão — 20/10/2026
+
+`node --test model.test.mjs operations.test.mjs`: 27/27 testes passaram. Incluem normalização de base anterior, recorrência idempotente e checklist reiniciado, disponibilidade/conflitos e cancelamento, gatilhos de jornada, condição falsa, espera e pausa, referências de pipelines, deduplicação/descadastro, programação da preparação e cálculos de relatórios/metas. Transações inválidas não persistem ações parciais.
+
+`verify-operations.cjs`, Chromium, perfil descartável em http://127.0.0.1:4175: projeto, checklist, tarefa semanal/próxima ocorrência, quadro, tipo de reunião, agendamento com atividade, conflito recusado, jornada/inscrição/tarefa/histórico, campanha com público/preparação/registro manual, dashboard personalizado, relatório salvo, meta e persistência após recarga. Fluxo completo passou sem erros JavaScript. Os emails .test são sintéticos e nenhuma mensagem foi enviada.
+
+Revisão desktop e móvel em duas rodadas batidas, sem vazamento horizontal da página; tabelas possuem rolagem interna e largura mínima para legibilidade. Capturas locais `output/playwright/crm-ops-*.png`. Detector executado uma vez; identidade anterior mantida. Revisão independente apontou e foram corrigidos: checklist carregado para próxima recorrência, filtro de responsável do Meu trabalho e busca do calendário. Paginação das execuções e destinatários foi separada da página principal.
+
+Ainda não há testes reais de entrega de email, servidor/agendador, multiusuário ou portal público de autoagendamento, pois esses serviços não estão implementados. Cronômetros de aba em segundo plano podem ser suspensos pelo navegador; fila local retoma ao abrir o aplicativo.

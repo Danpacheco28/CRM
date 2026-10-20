@@ -12,6 +12,8 @@ colors:
   topbar: "#1b1d1e"
   stage: "#f6f8f9"
   board: "#eff3f5"
+  task-column: "#edf2f3"
+  progress-track: "#e2eae7"
   navigation-active: "#e1efeb"
   navigation-active-text: "#1e5a54"
   warning-background: "#fff0e0"
@@ -41,6 +43,10 @@ typography:
     fontFamily: "Arial, Helvetica, sans-serif"
     fontSize: "17px"
     fontWeight: 700
+  dashboard-metric:
+    fontFamily: "Arial, Helvetica, sans-serif"
+    fontSize: "27px"
+    fontWeight: 600
   metric:
     fontFamily: "Arial, Helvetica, sans-serif"
     fontSize: "23px"
@@ -99,11 +105,13 @@ components:
 
 ## Overview
 
-Registro em modo scan do sistema implementado em `styles.css` e `index.html`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o protótipo local, sem atribuir ao produto original comportamentos adicionados na implementação.
+Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js` e `operations-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o protótipo local, sem atribuir ao produto original comportamentos adicionados na implementação.
 
 A interface combina topo escuro, controles em verde petróleo e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Não houve definição de um nome conceitual de marca ou metáfora criativa pelo usuário.
 
 Atualização v2: ampliação autorizada para módulos CRM e pipelines configuráveis, preservando a identidade do primeiro funil. Evidências de interface: ../../output/playwright/crm-v2-desktop.png, crm-v2-stages.png, crm-v2-mobile.png e crm-v2-mobile-detail.png. A tipografia Arial foi mantida como decisão de continuidade, apesar do aviso do detector; novos tamanhos e fundos semânticos refletem o CSS atual.
+
+A ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda, jornadas, campanhas e gestão. Os novos elementos reutilizam painéis, tabelas, campos e estados existentes; progressos e etapas numeradas explicitam sequência e andamento.
 
 **Key Characteristics:**
 
@@ -138,9 +146,11 @@ O shell usa topo sticky de (56px), navegação lateral de (216px) e área princi
 
 Até (1100px), a lateral passa a (190px), o conteúdo tem preenchimento de (24px 18px), buscas medem (180px) e painéis em duas colunas passam a uma. A partir de (1700px), colunas podem crescer com base mínima de (280px).
 
-Até (760px), a lateral fica oculta e pode abrir como painel fixo de (245px) pelo botão do topo. A marca secundária e o indicador local são ocultados. O conteúdo usa (20px 14px), títulos de página medem (23px), cabeçalho e ações empilham. O seletor de pipeline ocupa uma linha inteira; status e visualização se acomodam abaixo. Colunas têm base de (85vw), cabeçalhos mínimo de (110px), quadro mínimo de (500px) sem altura máxima. Formulários e detalhes passam a uma coluna. Tabelas e calendário mantêm mínimo de (650px) com rolagem no próprio contêiner. Indicadores reduzem para (19px).
+Até (760px), a lateral fica oculta e pode abrir como painel fixo de (245px) pelo botão do topo. A marca secundária e o indicador local são ocultados. O conteúdo usa (20px 14px), títulos de página medem (23px), cabeçalho e ações empilham. O seletor de pipeline ocupa uma linha inteira; status e visualização se acomodam abaixo. Colunas têm base de (85vw), cabeçalhos mínimo de (110px), quadro mínimo de (500px) sem altura máxima. Formulários e detalhes passam a uma coluna. Tabelas operacionais mantêm mínimo de (800px) com rolagem no próprio contêiner; calendário mensal mantém (650px). Indicadores reduzem para (19px).
 
 Diálogos têm largura `min(760px,calc(100% - 28px))`; a variante ampla usa (1000px) com a mesma margem e altura máxima de `92dvh`. Textos longos quebram em cartões, tags, detalhes e tabelas. O quadro mantém contenção de layout e pintura.
+
+Quadros de tarefas usam colunas flexíveis de base (270px), espaçamento de (16px) e rolagem interna; no celular, a base passa a (85vw). Dashboards usam três colunas de indicadores, duas até (1100px), mantendo duas no celular. Metas usam duas colunas, uma até (1100px). Seletores e filtros de gestão quebram linha; no celular, seletores da barra ocupam a linha inteira e filtros de relatórios empilham. A agenda semanal mantém largura mínima de (850px) no celular; a diária usa uma única coluna sem largura mínima, com dia de no mínimo (400px). A agenda semanal usa dias de no mínimo (380px).
 
 ## Elevation & Depth
 
@@ -182,6 +192,24 @@ Tabelas compactas têm cabeçalhos de (11px), células de (12px), preenchimento 
 
 A impressão isola o documento comercial, remove cabeçalho e ações do diálogo, permite quebra de tabelas e evita quebra interna das linhas. A página impressa usa margem de (18mm). Não aplica à impressão o shell do aplicativo.
 
+### Operational work and progress
+
+Projetos e Meu trabalho usam linhas com bordas inferiores, metadados menores e ações alinhadas. Estatísticas operacionais usam valores de (22px), reduzidos a (19px) no celular. Checklists se organizam verticalmente com intervalo de (12px); dias da semana e horários disponíveis quebram linha. Horários disponíveis ocupam aproximadamente metade da linha no celular.
+
+**The Progress Rule.** Andamento é mostrado por barra nativa acompanhada de percentual e contexto textual. O trilho usa `progress-track`, preenchimento `accent`, altura de (9px) e cantos de (4px); valores visuais ficam limitados ao máximo da barra.
+
+### Journey steps and campaign previews
+
+Passos de jornada usam superfície clara, borda, cantos de (10px), preenchimento de (18px) e intervalo inferior de (22px). Um número circular de (28px) identifica a ordem; setas verticais conectam os passos. Cabeçalhos acomodam o tipo de passo e ações de reordenação, quebrando linha em larguras menores. No celular, o preenchimento passa a (14px). Históricos reutilizam linhas e divisores existentes.
+
+Prévia de email usa superfície tonal, borda e cantos de (8px), preenchimento de (24px), reduzido a (16px) no celular. Conteúdo preserva quebras e permite quebra de palavras. Estados e avisos descrevem preparação local e registro manual; a aparência não comunica envio automático inexistente.
+
+### Management dashboards and goals
+
+Indicadores de dashboard usam `dashboard-metric`, reduzido a (22px) no celular, com legenda de (12px) e contexto de (11px). Células têm preenchimento de (22px), reduzido a (16px). Metas reutilizam painéis, badges de situação e barras de progresso; filtros combinam período, responsável e pipeline. Títulos, valores e progresso permanecem associados ao recorte selecionado.
+
+**The Surface Continuity Rule.** Novos módulos reutilizam topo escuro, navegação clara, verde petróleo, campos e bordas do CRM; não introduzem uma identidade visual independente.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -196,6 +224,7 @@ A impressão isola o documento comercial, remove cabeçalho e ações do diálog
 - **Don't** documentar funcionalidades propostas como evidência observada do Leads2b.
 - **Don't** introduzir novas fontes ou efeitos de movimento como se fossem tokens existentes.
 - **Don't** ocultar o acesso a etapas para encaixar o quadro na tela pequena.
+
 
 
 
