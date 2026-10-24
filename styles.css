@@ -4,3 +4,15 @@
 /* Keep operational tables readable while scrolling inside narrow viewports. */
 #content .tablewrap table,#editor .tablewrap table{min-width:800px}
 @media(max-width:760px){.toolbar .actions>select{flex:1 1 100%;max-width:100%;width:100%}.toolbar>.actions{width:100%}}
+/* Internal accounts extend the incumbent Operate forms and tables. */
+.accountpanel{max-width:460px;margin:20px auto;padding:28px}
+.accountpanel h2{margin-top:0;font-size:22px}
+.accountpanel form{display:grid;gap:18px}
+.accountpanel label{display:grid;gap:8px}
+.accountpanel>p,.accountsetup p,.accountsetup li{line-height:1.7}
+.accountsetup{max-width:850px}
+.accountsetup ol{padding-left:22px;margin:20px 0}
+.accountnotice{margin-top:22px}
+#accountControls button{max-width:160px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+@media(max-width:760px){.accountpanel{margin:8px 0;padding:22px}#accountControls{gap:5px}#accountControls button{max-width:94px}.topbar:has(#accountControls:not(:empty)){height:auto;min-height:56px;flex-wrap:wrap;padding-block:10px}.topbar:has(#accountControls:not(:empty)) .topactions{flex-wrap:wrap;justify-content:flex-end}.topbar:has(#accountControls:not(:empty)) #backupTop{display:none}}
+@media(max-width:760px){#sidebar{top:var(--crm-header-height,56px);max-height:calc(100dvh - var(--crm-header-height,56px))}}

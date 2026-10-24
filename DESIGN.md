@@ -152,6 +152,8 @@ Diálogos têm largura `min(760px,calc(100% - 28px))`; a variante ampla usa (100
 
 Quadros de tarefas usam colunas flexíveis de base (270px), espaçamento de (16px) e rolagem interna; no celular, a base passa a (85vw). Dashboards usam três colunas de indicadores, duas até (1100px), mantendo duas no celular. Metas usam duas colunas, uma até (1100px). Seletores e filtros de gestão quebram linha; no celular, seletores da barra ocupam a linha inteira e filtros de relatórios empilham. A agenda semanal mantém largura mínima de (850px) no celular; a diária usa uma única coluna sem largura mínima, com dia de no mínimo (400px). A agenda semanal usa dias de no mínimo (380px).
 
+A extensão de acesso interno reutiliza o shell. O painel de login e troca obrigatória de senha tem largura máxima de (460px), margem de (20px auto), preenchimento de (28px), título de (22px) e formulário em grade com intervalo de (18px). Instruções de configuração ficam em painel de até (850px). Até (760px), o painel de acesso usa margem de (8px 0) e preenchimento de (22px). Com ações de conta presentes, o topo permite quebra de linha e altura automática, mantendo mínimo de (56px). A lateral móvel acompanha a altura real medida do topo por `--crm-header-height`, com fallback de (56px); não deve sobrepor suas ações. Nomes nos controles de conta usam reticências, limitados a (160px), ou (94px) no celular.
+
 ## Elevation & Depth
 
 O quadro e seus cartões usam bordas e fundos, sem sombra em repouso. Diálogos usam `0 20px 70px #13283040` e backdrop `#14232c70`. Avisos flutuantes usam `0 6px 20px #203f3c33` e ficam a (24px) da base. A lateral móvel aberta usa `8px 8px 24px #18303920`. Não há transições ou animações definidas no CSS atual.
@@ -210,6 +212,14 @@ Indicadores de dashboard usam `dashboard-metric`, reduzido a (22px) no celular, 
 
 **The Surface Continuity Rule.** Novos módulos reutilizam topo escuro, navegação clara, verde petróleo, campos e bordas do CRM; não introduzem uma identidade visual independente.
 
+### Internal accounts and protected forms
+
+Acesso interno preserva painel branco, borda, campos, botão principal e foco existentes. Login, primeira troca de senha e carregamento são estados do mesmo painel. Gestão de usuários reutiliza tabela, busca, filtro de situação, badges textuais e diálogos de criação/edição/exclusão. Administrador e colaborador têm explicações específicas; o estado de acesso não depende apenas da cor. Exclusão pede confirmação digitada; erros permanecem próximos ao formulário com anúncio de alerta. Durante uma operação, submissões ficam desabilitadas até a resposta. Campos de senha usam os propósitos de preenchimento automático atuais e novos; limpar um diálogo remove seu conteúdo sensível do DOM.
+
+**The Access State Rule.** A interface distingue dados locais, configuração pendente, autenticação/carregamento e base compartilhada confirmada. Dados da equipe e navegação dos módulos só aparecem após o carregamento autorizado; falha de gravação comunica que a alteração não foi confirmada e oferece recuperação da tentativa. Esses estados não afirmam que um serviço já está provisionado.
+
+A extensão Supabase exige configuração externa; não está documentada aqui como implantação concluída. Não há envio de convite nem recuperação de senha por email implementados. A tela orienta procurar o administrador. As imagens `../../output/playwright/crm-users-desktop.png`, `crm-users-edit-mobile.png` e `crm-users-login-mobile.png` mostram fixtures sintéticas de teste, não contas reais nem evidência de serviço provisionado.
+
 ## Do's and Don'ts
 
 ### Do:
@@ -224,6 +234,7 @@ Indicadores de dashboard usam `dashboard-metric`, reduzido a (22px) no celular, 
 - **Don't** documentar funcionalidades propostas como evidência observada do Leads2b.
 - **Don't** introduzir novas fontes ou efeitos de movimento como se fossem tokens existentes.
 - **Don't** ocultar o acesso a etapas para encaixar o quadro na tela pequena.
+
 
 
 

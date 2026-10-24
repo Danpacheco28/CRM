@@ -1,0 +1,141 @@
+﻿{
+    "schemaVersion":  2,
+    "generatedAt":  "2026-10-23T23:55:42.9442957Z",
+    "title":  "Design System: CRM — Operação comercial",
+    "extensions":  {
+                       "shadows":  [
+                                       {
+                                           "name":  "dialog",
+                                           "value":  "0 20px 70px #13283040",
+                                           "purpose":  "Separar o diálogo da operação comercial."
+                                       },
+                                       {
+                                           "name":  "toast",
+                                           "value":  "0 6px 20px #203f3c33",
+                                           "purpose":  "Destacar confirmação temporária acima das métricas."
+                                       },
+                                       {
+                                           "name":  "mobile-sidebar",
+                                           "value":  "8px 8px 24px #18303920",
+                                           "purpose":  "Separar a navegação móvel fixa do conteúdo."
+                                       }
+                                   ],
+                       "motion":  [
+
+                                  ],
+                       "breakpoints":  [
+                                           {
+                                               "value":  "760px",
+                                               "name":  "compact"
+                                           },
+                                           {
+                                               "value":  "1100px",
+                                               "name":  "medium"
+                                           },
+                                           {
+                                               "value":  "1700px",
+                                               "name":  "wide"
+                                           }
+                                       ]
+                   },
+    "components":  [
+                       {
+                           "name":  "Ação principal",
+                           "kind":  "button",
+                           "refersTo":  "button-primary",
+                           "description":  "Criar ou salvar negócios e aplicar filtros.",
+                           "html":  "\u003cbutton class=\"ds-primary\"\u003eSalvar\u003c/button\u003e",
+                           "css":  ".ds-primary{font:600 14px Arial,Helvetica,sans-serif;min-height:36px;border:1px solid #286964;border-radius:6px;padding:9px 11px;background:#286964;color:white;cursor:pointer}.ds-primary:hover{background:#194f4b}.ds-primary:focus-visible{outline:3px solid #088eaa;outline-offset:3px}"
+                       },
+                       {
+                           "name":  "Campo de texto",
+                           "kind":  "input",
+                           "refersTo":  "input",
+                           "description":  "Label superior e contorno visível de teclado.",
+                           "html":  "\u003clabel class=\"ds-field\"\u003eResponsável\u003cinput value=\"Eu\"\u003e\u003c/label\u003e",
+                           "css":  ".ds-field{display:flex;flex-direction:column;gap:7px;font:600 12px Arial,Helvetica,sans-serif;color:#183039}.ds-field input{box-sizing:border-box;width:100%;font:400 14px Arial,Helvetica,sans-serif;border:1px solid #9cabb3;border-radius:6px;padding:9px 11px;background:#fff;color:#183039}.ds-field input:focus-visible{outline:3px solid #088eaa;outline-offset:3px}"
+                       },
+                       {
+                           "html":  "\u003cnav class=\"ds-nav\"\u003e\u003ca href=\"#pipelines\" aria-current=\"page\"\u003e▥ Pipelines\u003c/a\u003e\u003ca href=\"#contacts\"\u003e♧ Contatos\u003c/a\u003e\u003c/nav\u003e",
+                           "description":  "Módulos com seleção atual verde e fundo claro.",
+                           "name":  "Navegação lateral",
+                           "css":  ".ds-nav{display:grid;gap:4px;font:13px Arial,Helvetica,sans-serif}.ds-nav a{display:flex;gap:12px;padding:11px 12px;color:#415863;text-decoration:none;border-radius:6px}.ds-nav a:hover{background:#f2f6f6}.ds-nav a[aria-current=page]{background:#e1efeb;color:#1e5a54;font-weight:700}.ds-nav a:focus-visible{outline:3px solid #088eaa;outline-offset:3px}",
+                           "kind":  "nav"
+                       },
+                       {
+                           "html":  "\u003cdiv class=\"ds-progress\"\u003e\u003cstrong\u003eProjeto · 60%\u003c/strong\u003e\u003cprogress max=\"100\" value=\"60\" aria-label=\"Progresso do projeto\"\u003e\u003c/progress\u003e\u003csmall\u003e3 de 5 tarefas concluídas\u003c/small\u003e\u003c/div\u003e",
+                           "description":  "Barra de andamento acompanhada de percentual e contexto.",
+                           "name":  "Progresso operacional",
+                           "css":  ".ds-progress{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#183039)}.ds-progress progress{display:block;width:100%;height:9px;border:0;border-radius:4px;overflow:hidden;accent-color:var(--accent,#286964);margin:12px 0;background:#e2eae7}.ds-progress progress::-webkit-progress-bar{background:#e2eae7}.ds-progress progress::-webkit-progress-value{background:var(--accent,#286964)}.ds-progress small{font-size:12px;color:var(--muted,#596b78)}",
+                           "kind":  "custom"
+                       },
+                       {
+                           "html":  "\u003csection class=\"ds-step\"\u003e\u003cspan class=\"ds-stepnumber\"\u003e1\u003c/span\u003e\u003cstrong\u003eCriar tarefa\u003c/strong\u003e\u003cp\u003eConfigure a próxima ação local.\u003c/p\u003e\u003c/section\u003e",
+                           "description":  "Contêiner numerado de edição sequencial.",
+                           "name":  "Passo de jornada",
+                           "css":  ".ds-step{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#183039);padding:18px;border:1px solid var(--line,#dce2e7);border-radius:10px;background:#fafcfc}.ds-stepnumber{display:inline-grid;place-items:center;width:28px;height:28px;border-radius:50%;background:#e1eee9;color:var(--accent,#286964);font-weight:700;font-size:12px;margin-right:12px}.ds-step p{font-size:12px;line-height:1.7}",
+                           "kind":  "custom"
+                       },
+                       {
+                           "name":  "Tag",
+                           "description":  "Identificação compacta em cartões e registros.",
+                           "css":  ".ds-tag{font:11px Arial,Helvetica,sans-serif;color:#265c57;background:#e2f0ec;border-radius:4px;padding:4px 7px;display:inline-block;overflow-wrap:anywhere;max-width:100%}",
+                           "kind":  "chip",
+                           "refersTo":  "tag",
+                           "html":  "\u003cspan class=\"ds-tag\"\u003ePrioridade comercial\u003c/span\u003e"
+                       },
+                       {
+                           "name":  "Cartão comercial",
+                           "description":  "Superfície branca com borda, título e metadados.",
+                           "css":  ".ds-card{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#183039);background:white;border:1px solid var(--line,#dce2e7);border-radius:12px;padding:15px}.ds-card p{font-size:12px;color:var(--muted,#596b78);margin:8px 0 16px}.ds-card span{font-size:12px;font-weight:700;font-variant-numeric:tabular-nums}",
+                           "kind":  "card",
+                           "refersTo":  "card",
+                           "html":  "\u003carticle class=\"ds-card\"\u003e\u003cstrong\u003eProposta comercial\u003c/strong\u003e\u003cp\u003eOrganização\u003c/p\u003e\u003cspan\u003eR$ 2.500,00\u003c/span\u003e\u003c/article\u003e"
+                       },
+                       {
+                           "html":  "\u003csection class=\"ds-account\"\u003e\u003ch2\u003eBem-vindo de volta\u003c/h2\u003e\u003cform\u003e\u003clabel\u003eEmail\u003cinput type=\"email\" autocomplete=\"username\" required\u003e\u003c/label\u003e\u003clabel\u003eSenha\u003cinput type=\"password\" autocomplete=\"current-password\" required\u003e\u003c/label\u003e\u003cbutton type=\"submit\"\u003eEntrar\u003c/button\u003e\u003c/form\u003e\u003cp\u003eSolicite sua conta ao administrador.\u003c/p\u003e\u003c/section\u003e",
+                           "description":  "Login e primeira troca de senha usam os mesmos campos, foco e painel do CRM; exemplo sintético.",
+                           "name":  "Painel de acesso interno",
+                           "css":  ".ds-account{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#183039);background:var(--paper,#fff);border:1px solid var(--line,#dce2e7);border-radius:10px;max-width:460px;margin:20px auto;padding:28px}.ds-account h2{margin:0 0 18px;font-size:22px}.ds-account form{display:grid;gap:18px}.ds-account label{display:grid;gap:8px;font-size:12px;font-weight:600}.ds-account input{font:400 14px Arial,Helvetica,sans-serif;padding:9px 11px;border:1px solid #9cabb3;border-radius:6px;min-width:0}.ds-account button{font:600 14px Arial,Helvetica,sans-serif;background:var(--accent,#286964);color:white;border:1px solid var(--accent,#286964);border-radius:6px;padding:9px 11px;min-height:36px;cursor:pointer}.ds-account button:hover{background:var(--accent-hover,#194f4b)}.ds-account button:disabled{opacity:.5;cursor:not-allowed}.ds-account input:focus-visible,.ds-account button:focus-visible{outline:3px solid #088eaa;outline-offset:3px}.ds-account p{line-height:1.7;color:var(--muted,#596b78)}@media(max-width:760px){.ds-account{margin:8px 0;padding:22px}}",
+                           "kind":  "custom"
+                       }
+                   ],
+    "narrative":  {
+                      "northStar":  "",
+                      "overview":  "Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js` e `operations-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o protótipo local, sem atribuir ao produto original comportamentos adicionados na implementação.\n\nA interface combina topo escuro, controles em verde petróleo e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Não houve definição de um nome conceitual de marca ou metáfora criativa pelo usuário.\n\nAtualização v2: ampliação autorizada para módulos CRM e pipelines configuráveis, preservando a identidade do primeiro funil. Evidências de interface: ../../output/playwright/crm-v2-desktop.png, crm-v2-stages.png, crm-v2-mobile.png e crm-v2-mobile-detail.png. A tipografia Arial foi mantida como decisão de continuidade, apesar do aviso do detector; novos tamanhos e fundos semânticos refletem o CSS atual.\n\nA ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda, jornadas, campanhas e gestão. Os novos elementos reutilizam painéis, tabelas, campos e estados existentes; progressos e etapas numeradas explicitam sequência e andamento.",
+                      "keyCharacteristics":  [
+                                                 "Colunas comerciais persistentes com rolagem horizontal.",
+                                                 "Verde petróleo para ações principais e seleção.",
+                                                 "Contraste por superfícies e bordas; sombras concentradas em sobreposições.",
+                                                 "Tipografia de sistema compacta."
+                                             ],
+                      "rules":  [
+                                    {
+                                        "section":  "components",
+                                        "body":  "Andamento é mostrado por barra nativa acompanhada de percentual e contexto textual. O trilho usa `progress-track`, preenchimento `accent`, altura de (9px) e cantos de (4px); valores visuais ficam limitados ao máximo da barra.",
+                                        "name":  "Progress"
+                                    },
+                                    {
+                                        "section":  "components",
+                                        "body":  "Novos módulos reutilizam topo escuro, navegação clara, verde petróleo, campos e bordas do CRM; não introduzem uma identidade visual independente.",
+                                        "name":  "Surface Continuity"
+                                    },
+                                    {
+                                        "section":  "components",
+                                        "body":  "A interface distingue dados locais, configuração pendente, autenticação/carregamento e base compartilhada confirmada. Dados da equipe e navegação dos módulos só aparecem após o carregamento autorizado; falha de gravação comunica que a alteração não foi confirmada e oferece recuperação da tentativa. Esses estados não afirmam que um serviço já está provisionado.",
+                                        "name":  "Access State"
+                                    }
+                                ],
+                      "dos":  [
+                                  "**Do** manter todas as etapas configuradas navegáveis em telas estreitas com rolagem interna.",
+                                  "**Do** preservar o contorno visível para navegação por teclado.",
+                                  "**Do** usar bordas e superfícies para separar o conteúdo do quadro.",
+                                  "**Do** manter rótulos textuais junto às métricas de ganho e perda."
+                              ],
+                      "donts":  [
+                                    "**Don\u0027t** documentar funcionalidades propostas como evidência observada do Leads2b.",
+                                    "**Don\u0027t** introduzir novas fontes ou efeitos de movimento como se fossem tokens existentes.",
+                                    "**Don\u0027t** ocultar o acesso a etapas para encaixar o quadro na tela pequena."
+                                ]
+                  }
+}

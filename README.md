@@ -4,6 +4,8 @@ Aplicativo web de CRM com pipelines configuráveis e módulos comerciais integra
 
 **Página:** https://danpacheco28.github.io/CRM/
 
+**Usuários internos:** consulte [CONFIGURACAO-USUARIOS.md](CONFIGURACAO-USUARIOS.md). Supabase Auth e a base interna estão conectados no projeto configurado. Administradores criam, editam, desativam e excluem contas; colaboradores trabalham na base comercial compartilhada. Não há usuários/senhas de demonstração no runtime.
+
 ## Usar localmente
 
 Execute `node server.cjs` nesta pasta e abra http://127.0.0.1:4173. Não há dependências npm. Use um servidor HTTP; o módulo JavaScript não deve ser aberto diretamente por `file://`.
@@ -33,11 +35,11 @@ Para mover um negócio a outro pipeline, abra o cartão e use **Mover para outro
 
 ## Dados, migração e backups
 
-Os dados ficam em `localStorage`, neste navegador e endereço. Não são enviados ao GitHub nem compartilhados entre usuários/dispositivos. Limpar os dados do site remove os registros locais.
+Com Supabase conectado, a base comercial fica no banco e os usuários ativos compartilham os registros. A sessão é mantida na aba; a senha não entra no armazenamento do CRM. Se a conexão estiver vazia, aplica-se o modo local anterior: dados em `localStorage` por navegador/endereço. Dados comerciais não são enviados ao repositório GitHub.
 
 A versão anterior (`crm-funil-v1`) é lida quando não há dados v2. Contatos e referências das etapas são migrados; a chave antiga é preservada. A primeira gravação salva a versão integrada em `crm-workspace-v2`. Falhas de validação/leitura não substituem automaticamente dados antigos.
 
-Use **Backup** para exportar todos os registros em JSON, incluindo anexos. A restauração valida o arquivo e exige confirmação, pois substitui a base atual. Antes da troca, mantém a última versão salva em `crm-before-restore` quando há espaço disponível. Isso não substitui um arquivo de backup fora do navegador. Arquivos JSON de restauração: limite de 15 MB.
+Use **Backup** para exportar os registros comerciais em JSON, incluindo anexos. Contas e senhas de autenticação não entram nesse arquivo. A restauração descrita a seguir está disponível apenas no modo local; a restauração compartilhada ainda não está habilitada. No modo local, a restauração valida o arquivo e exige confirmação, pois substitui a base atual. Antes da troca, mantém a última versão salva em `crm-before-restore` quando há espaço disponível. Isso não substitui um arquivo de backup fora do navegador. Arquivos JSON de restauração: limite de 15 MB.
 
 Alterações simultâneas em outra aba são detectadas; recarregue para continuar. Falhas de quota ou validação não devem atualizar parcialmente a base. Anexos: até 1 MB por arquivo e 10 por negócio, sujeitos à quota do navegador. Arquivos são baixados, não executados como HTML pela aplicação.
 
@@ -65,7 +67,7 @@ O botão CSV exporta os registros filtrados do módulo atual. Campos iniciados p
 
 ## Publicar no GitHub Pages
 
-Arquivos necessários: `index.html`, `styles.css`, `app.js` e **`model.mjs`, `operations-model.mjs` e `operations-ui.mjs`**. Envie-os na raiz junto de `.nojekyll`. O servidor Node é apenas para uso local.
+Arquivos necessários: `index.html`, `styles.css`, `app.js`, `model.mjs`, `operations-model.mjs`, `operations-ui.mjs`, `connection.mjs`, `account-client.mjs` e `accounts-ui.mjs`. Envie-os na raiz junto de `.nojekyll`. O servidor Node é apenas para uso local. A função Supabase é publicada separadamente.
 
 Em **Settings → Pages**, mantenha **Deploy from a branch → main → /(root)**. O site já usa caminhos relativos para funcionar no subdiretório `/CRM/`. Não enviar sessões de navegador, exportações de clientes, credenciais ou a pasta de memória junto do código.
 
@@ -88,6 +90,8 @@ O roteiro `verify-operations.cjs` usa um perfil local descartável na porta 4175
 
 ## Limites desta versão
 
-Dados permanecem no localStorage de cada navegador. Use backup JSON para proteger e transferir toda a base, incluindo os novos módulos. Bases anteriores v2 são normalizadas sem perder os registros existentes.
+A persistência compartilhada inicial usa snapshot JSON transacional de até 15 MB, incluindo anexos. Todos os colaboradores acessam a mesma base; ainda não há carteira individual por vendedor. Use **Atualizar base** para buscar alterações de outras pessoas. Conflitos de revisão são recusados para evitar sobrescrita; a tentativa não salva pode ser exportada antes de refazer a alteração. O administrador inicial escolheu começar com base vazia; dados locais antigos não foram apagados.
 
-Sem backend, login/permissões de servidor, sincronização multiusuário, envio de email/WhatsApp, captação pública, integração bidirecional de agenda, assinatura eletrônica ou importação do Drive. Não há cálculo fiscal, emissão fiscal, controle real de estoque ou cobrança recorrente automática. Agentes de IA não fazem parte desta entrega.
+Backups comerciais não substituem o backup do banco e das contas Auth. Recuperação de senha por email e restauração do snapshot compartilhado ainda não estão habilitadas; consulte o procedimento temporário em CONFIGURACAO-USUARIOS.md.
+
+Sem envio automático de email/WhatsApp, captação pública, integração bidirecional de agenda, assinatura eletrônica ou importação do Drive. Jornadas continuam dependendo do aplicativo aberto. Não há cálculo fiscal, emissão fiscal, controle real de estoque ou cobrança recorrente automática. Agentes de IA não fazem parte desta entrega.
