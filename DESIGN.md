@@ -1,33 +1,38 @@
 ﻿---
-name: CRM — Operação comercial
-description: Sistema visual do CRM local com módulos e pipelines configuráveis.
+name: Poliniza CRM — Operação comercial
+description: Sistema visual Poliniza CRM com marca discreta e módulos comerciais configuráveis.
 colors:
-  ink: "#183039"
-  muted: "#596b78"
-  accent: "#286964"
-  accent-hover: "#194f4b"
-  line: "#dce2e7"
-  surface: "#f5f7f8"
+  ink: "#302b36"
+  muted: "#68616e"
+  accent: "#602878"
+  accent-hover: "#481b5d"
+  line: "#e3dfe7"
+  surface: "#f7f6f8"
   paper: "#fff"
-  topbar: "#1b1d1e"
-  stage: "#f6f8f9"
-  board: "#eff3f5"
-  task-column: "#edf2f3"
-  progress-track: "#e2eae7"
-  navigation-active: "#e1efeb"
-  navigation-active-text: "#1e5a54"
+  topbar: "#24102f"
+  brand-gold: "#d9b75f"
+  brand-gold-line: "#72502a"
+  topbar-secondary-text: "#dfd3e5"
+  topbar-control-border: "#8e7898"
+  topbar-control-hover: "#3b2148"
+  stage: "#f8f7fa"
+  board: "#f1eff4"
+  task-column: "#f0edf3"
+  progress-track: "#e9e2ed"
+  navigation-active: "#efe7f3"
+  navigation-active-text: "#57246e"
   warning-background: "#fff0e0"
   warning-text: "#754815"
-  notice-background: "#edf4f1"
-  notice-text: "#345f55"
+  notice-background: "#f2edf5"
+  notice-text: "#60446d"
   status-neutral-background: "#edf0f3"
   status-neutral-text: "#445c68"
   status-won-background: "#e2f2e9"
   status-lost-background: "#fbe9e9"
   control-border: "#9cabb3"
-  focus: "#088eaa"
-  tag-background: "#e2f0ec"
-  tag-text: "#265c57"
+  focus: "#80409b"
+  tag-background: "#f0eaf4"
+  tag-text: "#5d326e"
   won: "#246c51"
   lost: "#a63737"
 typography:
@@ -101,13 +106,13 @@ components:
     padding: "4px 7px"
 ---
 
-# Design System: CRM — Operação comercial
+# Design System: Poliniza CRM — Operação comercial
 
 ## Overview
 
 Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js` e `operations-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o protótipo local, sem atribuir ao produto original comportamentos adicionados na implementação.
 
-A interface combina topo escuro, controles em verde petróleo e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Não houve definição de um nome conceitual de marca ou metáfora criativa pelo usuário.
+A interface combina topo escuro, controles em púrpura e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Marca Poliniza CRM confirmada pelo usuário; emblema dourado sobre púrpura fornecido em 25/10/2026.
 
 Atualização v2: ampliação autorizada para módulos CRM e pipelines configuráveis, preservando a identidade do primeiro funil. Evidências de interface: ../../output/playwright/crm-v2-desktop.png, crm-v2-stages.png, crm-v2-mobile.png e crm-v2-mobile-detail.png. A tipografia Arial foi mantida como decisão de continuidade, apesar do aviso do detector; novos tamanhos e fundos semânticos refletem o CSS atual.
 
@@ -116,7 +121,7 @@ A ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda
 **Key Characteristics:**
 
 - Colunas comerciais persistentes com rolagem horizontal.
-- Verde petróleo para ações principais e seleção.
+- Púrpura para ações principais e seleção.
 - Contraste por superfícies e bordas; sombras concentradas em sobreposições.
 - Tipografia de sistema compacta.
 
@@ -124,7 +129,7 @@ A ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda
 
 ### Primary
 
-O verde petróleo `accent` identifica ações principais, visualização selecionada e títulos interativos em hover; `accent-hover` escurece a resposta do controle. A marca simplificada usa verde próprio definido localmente no CSS.
+O púrpura `accent` identifica ações principais, visualização selecionada e títulos interativos em hover; `accent-hover` escurece a resposta do controle. O topo usa `topbar`; o emblema dourado original identifica a marca. O dourado `brand-gold` é reservado ao foco dos controles no topo, e `brand-gold-line` forma seu divisor inferior de (1px).
 
 ### Neutral
 
@@ -156,7 +161,7 @@ A extensão de acesso interno reutiliza o shell. O painel de login e troca obrig
 
 ## Elevation & Depth
 
-O quadro e seus cartões usam bordas e fundos, sem sombra em repouso. Diálogos usam `0 20px 70px #13283040` e backdrop `#14232c70`. Avisos flutuantes usam `0 6px 20px #203f3c33` e ficam a (24px) da base. A lateral móvel aberta usa `8px 8px 24px #18303920`. Não há transições ou animações definidas no CSS atual.
+O quadro e seus cartões usam bordas e fundos, sem sombra em repouso. Diálogos usam `0 20px 70px #13283040` e backdrop `#14232c70`. Avisos flutuantes usam `0 6px 20px #203f3c33` e ficam a (24px) da base. A lateral móvel aberta usa `8px 8px 24px #302b3620`. Não há transições ou animações definidas no CSS atual.
 
 ## Shapes
 
@@ -164,9 +169,17 @@ Controles têm cantos discretamente arredondados; cartões, estados vazios e di�
 
 ## Components
 
+### Poliniza brand
+
+A marca do topo reúne o emblema original `poliniza-emblema.png`, sem alteração, o nome “Poliniza CRM” e o descritor “Operação comercial”. O mesmo arquivo serve como favicon. O emblema mede (36px) com cantos de (7px); em telas de até (760px), mede (32px). O nome usa peso (700) e tamanho de (18px), reduzido a (17px) no celular, permanecendo visível. Somente o descritor é ocultado nesse breakpoint. O topo usa texto secundário `topbar-secondary-text`, bordas de controle `topbar-control-border` e hover `topbar-control-hover`.
+
+**The Restrained Brand Rule.** Púrpura identifica ação e seleção sobre superfícies claras; dourado fica no emblema e nos detalhes do topo. Estados de ganho, perda e alerta mantêm as cores semânticas existentes. Não ampliar a marca para fundos saturados de tabelas ou quadros.
+
+Evidências da atualização de 25/10/2026: `../../output/playwright/poliniza-login-desktop.png`, `poliniza-board-desktop.png` e `poliniza-board-mobile.png`. As capturas do quadro usam base local vazia de validação.
+
 ### Buttons
 
-Ações principais e seleção compartilham verde petróleo e texto branco. Botões comuns usam fundo branco, borda de campo, peso (600) e altura mínima de (36px). Hover comum usa fundo suave; hover principal escurece. Botões de ícone têm fundo transparente. Exclusão usa texto vermelho. Foco de teclado usa contorno de (3px) com afastamento de (3px).
+Ações principais e seleção compartilham púrpura e texto branco. Botões comuns usam fundo branco, borda de campo, peso (600) e altura mínima de (36px). Hover comum usa fundo suave; hover principal escurece. Botões de ícone têm fundo transparente. Exclusão usa texto vermelho. Foco de teclado usa contorno de (3px) com afastamento de (3px).
 
 ### Cards / Containers
 
@@ -210,7 +223,7 @@ Prévia de email usa superfície tonal, borda e cantos de (8px), preenchimento d
 
 Indicadores de dashboard usam `dashboard-metric`, reduzido a (22px) no celular, com legenda de (12px) e contexto de (11px). Células têm preenchimento de (22px), reduzido a (16px). Metas reutilizam painéis, badges de situação e barras de progresso; filtros combinam período, responsável e pipeline. Títulos, valores e progresso permanecem associados ao recorte selecionado.
 
-**The Surface Continuity Rule.** Novos módulos reutilizam topo escuro, navegação clara, verde petróleo, campos e bordas do CRM; não introduzem uma identidade visual independente.
+**The Surface Continuity Rule.** Novos módulos reutilizam topo escuro, navegação clara, púrpura, campos e bordas do CRM; não introduzem uma identidade visual independente.
 
 ### Internal accounts and protected forms
 
@@ -234,9 +247,3 @@ A extensão Supabase exige configuração externa; não está documentada aqui c
 - **Don't** documentar funcionalidades propostas como evidência observada do Leads2b.
 - **Don't** introduzir novas fontes ou efeitos de movimento como se fossem tokens existentes.
 - **Don't** ocultar o acesso a etapas para encaixar o quadro na tela pequena.
-
-
-
-
-
-

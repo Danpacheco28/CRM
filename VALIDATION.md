@@ -72,3 +72,9 @@ Ainda não há testes reais de entrega de email, servidor/agendador, multiusuár
 - Usuário autorizou base vazia; inicialização compartilhada confirmou cinco etapas e zero negócios, sem apagar dados locais antigos.
 - Ensaio real pela interface: criação de conta técnica temporária; login Auth200; acesso aos dados bloqueado403 antes da troca inicial; sessão já emitida bloqueada403 após desativação; conta excluída e token recusado401. Conta temporária removida ao fim; apenas administrador permaneceu. Nenhum email enviado.
 - 31 testes Node passaram antes de publicar. Avisos HTTP401/403 no console do ensaio correspondem às recusas intencionais, não a falhas de autenticação do administrador.
+## Identidade Poliniza CRM — 25/10/2026
+- Nome aplicado no topo, títulos de página e identificação dos diálogos. Emblema original fornecido usado no topo e favicon, sem alteração do arquivo.
+- Púrpura em ações e seleções, dourado restrito à marca e detalhes do topo; superfícies claras e cores semânticas preservadas.
+- Desktop1440px e celular390px: imagem carregada, nome visível, sem overflow horizontal da página, sem erros JavaScript no fluxo local vazio. Login também capturado sem dados de autenticação.
+- Contraste calculado: ação principal10,13:1; seleção9,24:1; texto secundário5,53:1; foco púrpura6,72:1. Revisão independente concluída sem correções materiais.
+- Detector executado uma vez: avisos de Arial herdada e tokens documentais; sem mudança de fonte solicitada. Funcionalidade, banco e contas não alterados.
