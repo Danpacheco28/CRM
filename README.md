@@ -95,3 +95,8 @@ A persistência compartilhada inicial usa snapshot JSON transacional de até 15 
 Backups comerciais não substituem o backup do banco e das contas Auth. Recuperação de senha por email e restauração do snapshot compartilhado ainda não estão habilitadas; consulte o procedimento temporário em CONFIGURACAO-USUARIOS.md.
 
 Sem envio automático de email/WhatsApp, captação pública, integração bidirecional de agenda, assinatura eletrônica ou importação do Drive. Jornadas continuam dependendo do aplicativo aberto. Não há cálculo fiscal, emissão fiscal, controle real de estoque ou cobrança recorrente automática. Agentes de IA não fazem parte desta entrega.
+## Gravação por registro — homologação
+Primeira fatia backend isolada em [records/README.md](records/README.md): contatos, pipelines, etapas, negócios e histórico. Não conectada ao aplicativo publicado nem instalada no projeto ativo. SQL, importador e repositório com versões individuais, transações, idempotência e paginação. Roteiro `node scripts/test-records.mjs` exige PGlite descartável configurado e executa todos os testes existentes e novos.
+
+## Publicação compatível na base atual
+O usuário autorizou atualizar a própria base Poliniza em30/10/2026. Ponte de gravação por entidade preparada em record-sync.mjs e migration202610300001_record_compat.sql, preservando todas as telas e módulos. Não é a UI sintética nem a normalização tipada completa: etapas/itens/anexos continuam dentro de suas entidades; leitura ainda recompõe a base. Instalação/ativação/publicação aguardam login do usuário no Supabase. Procedimento e limites em [records/PRODUCTION-CUTOVER.md](records/PRODUCTION-CUTOVER.md). Não executar de novo a migration de usuários.

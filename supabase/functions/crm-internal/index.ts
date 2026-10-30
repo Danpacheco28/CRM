@@ -1,6 +1,7 @@
 import { createClient } from 'npm:@supabase/supabase-js@2.57.4';
 import { validateState } from '../../../model.mjs';
 import { userInput } from '../../../account-client.mjs';
+import {flattenRecords,saveRecordChanges,assembleRecords} from '../../../record-sync.mjs';
 
 const url=Deno.env.get('SUPABASE_URL')!,key=Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!;
 const admin=createClient(url,key,{auth:{persistSession:false,autoRefreshToken:false}});
@@ -32,7 +33,17 @@ Deno.serve(async request=>{
       const {error}=await admin.rpc('crm_member_action',{p_actor:member.id,p_action:'passwordChanged'});if(error)throw error;return response({ok:true});
     }
     if(member.must_change_password)return response({error:'Altere sua senha inicial antes de acessar o CRM.'},403);
-    if(action==='loadState'){const {data,error}=await admin.from('crm_workspace').select('payload,revision').eq('id',true).single();if(error)throw error;return response(data);}
+    if(action==='loadState'){const {data,error}=await admin.rpc('crm_record_read',{p_actor:member.id});if(error)throw error;return response(data);}
+    if(action==='applyRecords')return response(await saveRecordChanges((name:string,args:Record<string,unknown>)=>admin.rpc(name,args),member.id,input,validateState));
+    if(action==='migrateRecords'){
+      if(member.role!=='admin')throw Error('Somente administradores podem migrar.');
+      const {data:current,error:readError}=await admin.rpc('crm_record_read',{p_actor:member.id});if(readError)throw readError;
+      if(current.mode==='records')return response({alreadyActive:true});
+      if(current.revision!==input.expected)throw Error('CONFLICT: atualize o backup antes de migrar.');
+      const original=structuredClone(current.payload);validateState(current.payload);const entries=flattenRecords(current.payload);
+      validateState(assembleRecords(Object.values(entries),current.revision,current.payload.savedAt));
+      const {data,error}=await admin.rpc('crm_record_activate',{p_actor:member.id,p_expected:current.revision,p_snapshot:original,p_entries:entries});if(error)throw error;return response(data);
+    }
     if(action==='saveState'||action==='initState'){
       if(action==='initState'&&member.role!=='admin')return response({error:'Somente administradores inicializam a base.'},403);
       if(!Number.isSafeInteger(input.expected)||input.expected<0)throw Error('Revisão inválida.');

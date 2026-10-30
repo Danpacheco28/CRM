@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-25T20:09:06.034Z",
+  "generatedAt": "2026-10-30T04:06:34.557Z",
   "title": "Design System: Poliniza CRM — Operação comercial",
   "extensions": {
     "shadows": [
@@ -100,7 +100,7 @@
   ],
   "narrative": {
     "northStar": "",
-    "overview": "Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js` e `operations-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o protótipo local, sem atribuir ao produto original comportamentos adicionados na implementação.\n\nA interface combina topo escuro, controles em púrpura e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Marca Poliniza CRM confirmada pelo usuário; emblema dourado sobre púrpura fornecido em 25/10/2026.\n\nAtualização v2: ampliação autorizada para módulos CRM e pipelines configuráveis, preservando a identidade do primeiro funil. Evidências de interface: ../../output/playwright/crm-v2-desktop.png, crm-v2-stages.png, crm-v2-mobile.png e crm-v2-mobile-detail.png. A tipografia Arial foi mantida como decisão de continuidade, apesar do aviso do detector; novos tamanhos e fundos semânticos refletem o CSS atual.\n\nA ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda, jornadas, campanhas e gestão. Os novos elementos reutilizam painéis, tabelas, campos e estados existentes; progressos e etapas numeradas explicitam sequência e andamento.",
+    "overview": "Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js` e `operations-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o protótipo local, sem atribuir ao produto original comportamentos adicionados na implementação.\n\nA interface combina topo escuro, controles em púrpura e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Marca Poliniza CRM confirmada pelo usuário; emblema dourado sobre púrpura fornecido em 25/10/2026.\n\nAtualização v2: ampliação autorizada para módulos CRM e pipelines configuráveis, preservando a identidade do primeiro funil. Evidências de interface: ../../output/playwright/crm-v2-desktop.png, crm-v2-stages.png, crm-v2-mobile.png e crm-v2-mobile-detail.png. A tipografia Arial foi mantida como decisão de continuidade, apesar do aviso do detector; novos tamanhos e fundos semânticos refletem o CSS atual.\n\nA ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda, jornadas, campanhas e gestão. Os novos elementos reutilizam painéis, tabelas, campos e estados existentes; progressos e etapas numeradas explicitam sequência e andamento.\n\nA homologação de gravação por registro amplia o mesmo sistema em `homologacao/index.html`, `homologacao/app.mjs` e `homologacao/style.css`. O aviso permanente identifica dados fictícios, ausência de login real e descarte dos dados ao reiniciar o servidor local. A superfície de teste não representa implantação remota nem migração do CRM publicado.",
     "keyCharacteristics": [
       "Colunas comerciais persistentes com rolagem horizontal.",
       "Púrpura para ações principais e seleção.",
@@ -127,6 +127,11 @@
         "section": "components",
         "body": "A interface distingue dados locais, configuração pendente, autenticação/carregamento e base compartilhada confirmada. Dados da equipe e navegação dos módulos só aparecem após o carregamento autorizado; falha de gravação comunica que a alteração não foi confirmada e oferece recuperação da tentativa. Esses estados não afirmam que um serviço já está provisionado.",
         "name": "Access State"
+      },
+      {
+        "name": "Confirmed Save",
+        "body": "Gravação não confirmada preserva a edição no formulário. Conflito oferece baixar a edição e reabrir a versão atual; resultado desconhecido mantém os campos bloqueados e oferece “Tentar confirmar”, repetindo a mesma requisição. Não anunciar sucesso antes da confirmação.",
+        "section": "components"
       }
     ],
     "dos": [

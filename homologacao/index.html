@@ -1,0 +1,21 @@
+<!doctype html>
+<html lang="pt-BR">
+<!-- THESIS: Validar gravação por registro no fluxo comercial da Poliniza.
+OWN-WORLD: Mesma marca púrpura/dourado, superfícies claras e controles do CRM ativo.
+STORY: Escolher contato, organizar negócio e planejar tarefa; revisar conflitos sem perder a edição.
+FIRST VIEWPORT: Aviso de dados fictícios e lista paginada com uma ação principal.
+FORM: Extensão Operate precisa do sistema existente; nenhuma substituição de identidade. -->
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Homologação · Poliniza CRM</title><link rel="icon" href="../poliniza-emblema.png"><link rel="stylesheet" href="../styles.css"><link rel="stylesheet" href="/homologacao/style.css"></head>
+<body>
+<header class="topbar"><button id="menuToggle" aria-label="Abrir navegação" aria-expanded="false">☰</button><a href="#contacts" class="brand"><img class="brandmark" src="../poliniza-emblema.png" alt="" width="36" height="36"><span class="brandname">Poliniza CRM</span><span class="brandtagline">Homologação</span></a><div class="topactions"><label for="actor" class="sr">Pessoa de teste</label><select id="actor" aria-label="Pessoa de teste"></select></div></header>
+<div class="workspace"><aside id="sidebar"><div class="navheading">AMBIENTE DE TESTES</div><nav id="navigation" aria-label="Módulos"></nav><div class="sidebottom"><p>Somente dados fictícios.<br>O CRM publicado não é alterado.</p></div></aside><main>
+<p class="notice sandboxnotice"><strong>Homologação local · dados fictícios.</strong> Sem login real. Os dados são apagados ao reiniciar este servidor. Não use informações de clientes.</p>
+<header class="pagehead"><div><p id="breadcrumb">Homologação</p><h1 id="pageTitle">Carregando…</h1><p id="description"></p></div><div class="actions"><button id="refresh">Atualizar lista</button><button id="new" class="primary">＋ Novo registro</button></div></header>
+<p id="pageError" class="alert" role="alert" hidden></p>
+<form id="searchForm" class="toolbar"><label>Buscar registros<input id="search" type="search" maxlength="200" placeholder="Digite um nome ou título"></label><div class="actions"><button type="submit">Buscar</button><button type="button" id="clearSearch">Limpar</button></div></form>
+<section id="content" aria-live="polite" aria-busy="true"></section>
+<p class="muted scopehint">Nesta etapa: contatos, funis, negócios, projetos e tarefas simples. Agendamentos, anexos, recorrências, orçamentos, campanhas e demais módulos ainda serão migrados.</p>
+</main></div>
+<dialog id="editor" aria-labelledby="dialogTitle"><div class="dialoghead"><div><p>Homologação · Poliniza CRM</p><h2 id="dialogTitle"></h2></div><button id="closeEditor" class="iconbutton" aria-label="Fechar formulário">×</button></div><div id="dialogContent"></div></dialog>
+<div class="toast" id="toast" role="status" hidden></div><script type="module" src="/homologacao/app.mjs"></script>
+</body></html>

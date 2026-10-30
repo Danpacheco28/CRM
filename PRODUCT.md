@@ -25,3 +25,6 @@ Servidor instalado com Supabase Auth, função crm-internal, tabelas sem acesso 
 
 ## Identidade confirmada — 25/10/2026
 Nome: Poliniza CRM. Usar emblema fornecido e cores púrpura/dourado com moderação, mantendo superfícies claras e leitura operacional.
+
+## Homologação por registro — 30/10/2026
+Superfície isolada em homologacao/index.html, herdando identidade Poliniza e modo Operate. Tabelas paginadas, formulários e histórico para contatos/funis/negócios/projetos/tarefas simples. API local conectada a PostgreSQL/PGlite em memória, dados apenas fictícios, sem login real (seletor de perfis de teste). Não é a versão publicada, não persiste após reiniciar servidor e não utiliza o Supabase ativo. Mantém edição em conflito e repete chave/conteúdo após confirmação desconhecida. Não possui Kanban completo, seleção remota de vínculos além de100 opções, agendamento/recorrência/anexos/comercial/campanhas migrados ou corte de produção pronto. Projeto Supabase remoto separado ainda não criado pelo usuário.

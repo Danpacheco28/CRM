@@ -1,0 +1,8 @@
+.sandboxnotice{margin:0 0 24px}.scopehint{font-size:12px;line-height:1.7;margin-top:22px;max-width:75ch}
+.topbar select{max-width:220px;font-size:12px;color:var(--ink);background:var(--paper)}.topbar{height:auto;min-height:56px;padding-block:8px}.topactions{margin-left:auto}
+.recordstatus{display:flex;gap:8px;align-items:center;flex-wrap:wrap}.historylist{list-style:none;padding:0;margin:0}.historylist li{padding:14px 0;border-bottom:1px solid var(--line)}.historylist small{display:block;color:var(--muted);margin-top:7px;line-height:1.6}
+.stagefields{display:grid;gap:14px;margin:20px 0}.stagefields fieldset{border:1px solid var(--line);border-radius:8px;padding:16px;margin:0}.stagefields legend{padding:0 6px;font-size:12px;color:var(--muted)}
+.recordconflict{margin-top:20px}.recordconflict button{margin:8px 8px 0 0}.tablewrap{border-top:1px solid var(--line)}
+.tablehint{display:none}
+button:disabled{cursor:wait}.pendingform input,.pendingform select,.pendingform textarea{opacity:.65}.toolbar label{min-width:0;max-width:100%;width:260px}.toolbar input{width:100%}
+@media(max-width:760px){.topbar{flex-wrap:wrap}.topbar .topactions{width:100%;justify-content:flex-end}.topbar select{max-width:100%}.toolbar label{width:100%}.tablehint{display:block;font-size:12px;color:var(--muted);margin:12px 0}.tablewrap table{min-width:650px}#sidebar{top:var(--crm-header-height,100px);max-height:calc(100dvh - var(--crm-header-height,100px))}.stagefields fieldset{padding:12px}}

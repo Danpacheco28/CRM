@@ -118,6 +118,8 @@ Atualização v2: ampliação autorizada para módulos CRM e pipelines configur�
 
 A ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda, jornadas, campanhas e gestão. Os novos elementos reutilizam painéis, tabelas, campos e estados existentes; progressos e etapas numeradas explicitam sequência e andamento.
 
+A homologação de gravação por registro amplia o mesmo sistema em `homologacao/index.html`, `homologacao/app.mjs` e `homologacao/style.css`. O aviso permanente identifica dados fictícios, ausência de login real e descarte dos dados ao reiniciar o servidor local. A superfície de teste não representa implantação remota nem migração do CRM publicado.
+
 **Key Characteristics:**
 
 - Colunas comerciais persistentes com rolagem horizontal.
@@ -158,6 +160,8 @@ Diálogos têm largura `min(760px,calc(100% - 28px))`; a variante ampla usa (100
 Quadros de tarefas usam colunas flexíveis de base (270px), espaçamento de (16px) e rolagem interna; no celular, a base passa a (85vw). Dashboards usam três colunas de indicadores, duas até (1100px), mantendo duas no celular. Metas usam duas colunas, uma até (1100px). Seletores e filtros de gestão quebram linha; no celular, seletores da barra ocupam a linha inteira e filtros de relatórios empilham. A agenda semanal mantém largura mínima de (850px) no celular; a diária usa uma única coluna sem largura mínima, com dia de no mínimo (400px). A agenda semanal usa dias de no mínimo (380px).
 
 A extensão de acesso interno reutiliza o shell. O painel de login e troca obrigatória de senha tem largura máxima de (460px), margem de (20px auto), preenchimento de (28px), título de (22px) e formulário em grade com intervalo de (18px). Instruções de configuração ficam em painel de até (850px). Até (760px), o painel de acesso usa margem de (8px 0) e preenchimento de (22px). Com ações de conta presentes, o topo permite quebra de linha e altura automática, mantendo mínimo de (56px). A lateral móvel acompanha a altura real medida do topo por `--crm-header-height`, com fallback de (56px); não deve sobrepor suas ações. Nomes nos controles de conta usam reticências, limitados a (160px), ou (94px) no celular.
+
+Na homologação, o topo usa altura automática, mínimo de (56px) e preenchimento vertical de (8px). O seletor de pessoa de teste usa `ink` sobre `paper`, texto de (12px) e largura máxima de (220px). Até (760px), as ações do topo ocupam outra linha e o seletor respeita a largura disponível. A lateral móvel acompanha a altura medida do topo via `--crm-header-height`, com fallback de (100px). A tabela mantém largura mínima de (650px) e rolagem contida; a instrução “Deslize a tabela para ver mais colunas.” aparece apenas nesse breakpoint. Busca e paginação reutilizam toolbar e tablewrap; o campo de busca tem largura de (260px), passando a (100%) no celular.
 
 ## Elevation & Depth
 
@@ -232,6 +236,18 @@ Acesso interno preserva painel branco, borda, campos, botão principal e foco ex
 **The Access State Rule.** A interface distingue dados locais, configuração pendente, autenticação/carregamento e base compartilhada confirmada. Dados da equipe e navegação dos módulos só aparecem após o carregamento autorizado; falha de gravação comunica que a alteração não foi confirmada e oferece recuperação da tentativa. Esses estados não afirmam que um serviço já está provisionado.
 
 A extensão Supabase exige configuração externa; não está documentada aqui como implantação concluída. Não há envio de convite nem recuperação de senha por email implementados. A tela orienta procurar o administrador. As imagens `../../output/playwright/crm-users-desktop.png`, `crm-users-edit-mobile.png` e `crm-users-login-mobile.png` mostram fixtures sintéticas de teste, não contas reais nem evidência de serviço provisionado.
+
+### Record-persistence homologation
+
+A superfície de homologação reutiliza a marca, as ações púrpura, a navegação clara e os diálogos nativos existentes. O aviso de dados fictícios fica acima do cabeçalho da página; escopo e limitações aparecem após a lista. O seletor de pessoa é uma fixture de teste, não um login. Os registros aparecem em tabelas paginadas com nome/título interativo, data da atualização e ações explícitas; o histórico mostra eventos recentes e autor.
+
+O editor de etapas usa fieldsets com borda de (1px), raio de (8px), preenchimento de (16px), reduzido a (12px) no celular, e intervalo de (14px). Legendas de (12px) identificam a ordem; botões nomeiam adicionar, subir, descer e remover. Formulários preservam os labels e o foco de teclado do CRM.
+
+Campos com confirmação pendente usam opacidade de (.65) e ficam desabilitados; o botão de nova tentativa permanece disponível quando o resultado é desconhecido. Mensagens de conflito aparecem junto ao formulário e não apagam os valores digitados.
+
+**The Confirmed Save Rule.** Gravação não confirmada preserva a edição no formulário. Conflito oferece baixar a edição e reabrir a versão atual; resultado desconhecido mantém os campos bloqueados e oferece “Tentar confirmar”, repetindo a mesma requisição. Não anunciar sucesso antes da confirmação.
+
+Referências sintéticas: `../../output/playwright/records-homologacao-desktop.png`, `records-homologacao-mobile.png` e `records-homologacao-form-mobile.png`. Esses arquivos mostram o ambiente local de testes; não comprovam autenticação real, dados persistentes ou deploy em produção.
 
 ## Do's and Don'ts
 
