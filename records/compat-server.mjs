@@ -11,7 +11,7 @@ await env.db.query('select public.crm_save_workspace($1,0,$2::jsonb,true)',[acto
 const rpc=async(name,args)=>{const allowed=['crm_record_read','crm_record_apply','crm_record_receipt','crm_record_activate'];if(!allowed.includes(name))throw Error('RPC inválida.');const values=Object.values(args);try{const r=await env.db.query(`select public.${name}(${values.map((v,i)=>`$${i+1}${v!==null&&typeof v==='object'?'::jsonb':''}`)}) value`,values.map(v=>v!==null&&typeof v==='object'?JSON.stringify(v):v));return {data:r.rows[0].value};}catch(error){return {error};}};
 const current=(await rpc('crm_record_read',{p_actor:actor})).data;
 const activation=await rpc('crm_record_activate',{p_actor:actor,p_expected:current.revision,p_snapshot:current.payload,p_entries:flattenRecords(current.payload)});if(activation.error)throw activation.error;
-const files=['index.html','styles.css','app.js','model.mjs','operations-model.mjs','operations-ui.mjs','accounts-ui.mjs','account-client.mjs','record-sync.mjs','poliniza-emblema.png'];
+const files=['import-ui.mjs','import-model.mjs','dashboard-model.mjs','index.html','styles.css','app.js','model.mjs','operations-model.mjs','operations-ui.mjs','accounts-ui.mjs','account-client.mjs','record-sync.mjs','poliniza-emblema.png'];
 http.createServer(async(req,res)=>{
  const json=(data,status=200)=>{res.writeHead(status,{'Content-Type':'application/json','Cache-Control':'no-store'});res.end(JSON.stringify(data));};
  const host=`127.0.0.1:${port}`,path=new URL(req.url,`http://${host}`).pathname;

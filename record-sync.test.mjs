@@ -44,6 +44,13 @@ test('SQL de produção: migração, gravações independentes, conflitos, rebas
    const settings=structuredClone(base.payload);settings.settings.tags.push('Atualização de teste');await save(base,settings,'config-update');
    await assert.rejects(()=>saveRecordChanges(rpc,admin,{requestId:'stale-config',changes:[{collection:'contacts',id:'contact-a',expected:base.versions['contacts:contact-a'],deleted:false,data:{...base.payload.contacts[0],phone:'Não confirmar'}}],guards:[{collection:'settings',id:'singleton',expected:base.versions['settings:singleton']}]},validateState),/configuração/);
   });
+  await t.test('importação exige a revisão da prévia mesmo quando outro registro mudou',async()=>{
+   const base=await load(),next=structuredClone(base.payload);next.contacts[0].name='Importação não confirmada';
+   const other=structuredClone(base.payload);other.contacts[1].phone='Outra edição';await save(base,other,'before-import',member);
+   const changes=recordChanges(base.payload,next,base.versions);
+   await assert.rejects(()=>saveRecordChanges(rpc,admin,{requestId:'import-stale',requireRevision:base.revision,changes},validateState),/prévia de importação/);
+   assert.notEqual((await load()).payload.contacts[0].name,'Importação não confirmada');
+  });
   await t.test('transação inválida não escreve parcialmente e usuário revogado não lê',async()=>{
    const base=await load(),changes=[{collection:'contacts',id:'contact-a',expected:base.versions['contacts:contact-a'],deleted:false,data:{...base.payload.contacts[0],name:'Não confirmar'}},{collection:'contacts',id:'contact-b',expected:0,deleted:true,data:null}];
    const r=await rpc('crm_record_apply',{p_actor:admin,p_request:'atomic',p_expected:base.revision,p_changes:changes,p_saved_at:new Date().toISOString()});assert.match(r.error.message,/CONFLICT/);assert.notEqual((await load()).payload.contacts[0].name,'Não confirmar');

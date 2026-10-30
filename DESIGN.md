@@ -110,7 +110,7 @@ components:
 
 ## Overview
 
-Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js` e `operations-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o protótipo local, sem atribuir ao produto original comportamentos adicionados na implementação.
+Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js`, `operations-ui.mjs` e `import-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o sistema Poliniza implementado, sem atribuir ao produto original comportamentos adicionados na implementação.
 
 A interface combina topo escuro, controles em púrpura e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Marca Poliniza CRM confirmada pelo usuário; emblema dourado sobre púrpura fornecido em 25/10/2026.
 
@@ -157,7 +157,7 @@ Até (760px), a lateral fica oculta e pode abrir como painel fixo de (245px) pel
 
 Diálogos têm largura `min(760px,calc(100% - 28px))`; a variante ampla usa (1000px) com a mesma margem e altura máxima de `92dvh`. Textos longos quebram em cartões, tags, detalhes e tabelas. O quadro mantém contenção de layout e pintura.
 
-Quadros de tarefas usam colunas flexíveis de base (270px), espaçamento de (16px) e rolagem interna; no celular, a base passa a (85vw). Dashboards usam três colunas de indicadores, duas até (1100px), mantendo duas no celular. Metas usam duas colunas, uma até (1100px). Seletores e filtros de gestão quebram linha; no celular, seletores da barra ocupam a linha inteira e filtros de relatórios empilham. A agenda semanal mantém largura mínima de (850px) no celular; a diária usa uma única coluna sem largura mínima, com dia de no mínimo (400px). A agenda semanal usa dias de no mínimo (380px).
+Quadros de tarefas usam colunas flexíveis de base (270px), espaçamento de (16px) e rolagem interna; no celular, a base passa a (85vw). Dashboards por pipeline usam faixas de quatro indicadores; a visão comercial usa três. Até (760px), ambas passam a duas colunas. Metas usam duas colunas, uma até (1100px). Seletores e filtros de gestão quebram linha; no celular, seletores da barra ocupam a linha inteira e filtros de relatórios empilham. A agenda semanal mantém largura mínima de (850px) no celular; a diária usa uma única coluna sem largura mínima, com dia de no mínimo (400px). A agenda semanal usa dias de no mínimo (380px).
 
 A extensão de acesso interno reutiliza o shell. O painel de login e troca obrigatória de senha tem largura máxima de (460px), margem de (20px auto), preenchimento de (28px), título de (22px) e formulário em grade com intervalo de (18px). Instruções de configuração ficam em painel de até (850px). Até (760px), o painel de acesso usa margem de (8px 0) e preenchimento de (22px). Com ações de conta presentes, o topo permite quebra de linha e altura automática, mantendo mínimo de (56px). A lateral móvel acompanha a altura real medida do topo por `--crm-header-height`, com fallback de (56px); não deve sobrepor suas ações. Nomes nos controles de conta usam reticências, limitados a (160px), ou (94px) no celular.
 
@@ -195,7 +195,7 @@ Campos e seletores compartilham o desenho dos controles. Labels ficam acima dos 
 
 ### Navigation
 
-Topo escuro com marca à esquerda e ações de backup e ajuda à direita. A navegação lateral clara mostra os módulos; o módulo ativo recebe fundo verde suave, texto verde escuro e peso (700). No breakpoint estreito, o menu abre e fecha uma lateral fixa. Alternância Quadro/Lista usa botões unidos e estado selecionado verde.
+Topo escuro com marca à esquerda e ações de backup e ajuda à direita. A navegação lateral clara mostra os módulos; o módulo ativo recebe fundo púrpura suave, texto púrpura escuro e peso (700). No breakpoint estreito, o menu abre e fecha uma lateral fixa. Alternância Quadro/Lista usa botões unidos e estado selecionado púrpura.
 
 ### Dialogs and feedback
 
@@ -225,9 +225,17 @@ Prévia de email usa superfície tonal, borda e cantos de (8px), preenchimento d
 
 ### Management dashboards and goals
 
-Indicadores de dashboard usam `dashboard-metric`, reduzido a (22px) no celular, com legenda de (12px) e contexto de (11px). Células têm preenchimento de (22px), reduzido a (16px). Metas reutilizam painéis, badges de situação e barras de progresso; filtros combinam período, responsável e pipeline. Títulos, valores e progresso permanecem associados ao recorte selecionado.
+Dashboards apresentam três seletores prontos em botões com estado pressionado textual e púrpura. Abaixo ficam período, responsável e pipeline, atalhos de período e uma comparação tabular. Cada pipeline ocupa um painel próprio com nome, contexto e ação para isolá-lo. Valores usam (26px), peso (700) e algarismos tabulares, reduzidos a (22px) no celular; legendas usam (12px) e contexto de data usa (11px). A faixa possui divisores horizontais e preenchimento vertical de (20px), reduzido a (16px) no celular. Listas de atividades atrasadas e futuras usam duas colunas no desktop e uma no celular. A comparação mantém rolagem interna, foco de teclado e instrução móvel. Metas reutilizam painéis, badges de situação e barras de progresso.
+
+**The Pipeline Context Rule.** Nome do pipeline, recorte e sentido da data permanecem visíveis junto aos valores. Pipelines são separados por ID, inclusive quando seus nomes coincidem; atividades sem vínculo aparecem em “Sem pipeline”. Cores semânticas reforçam os rótulos, sem substituí-los.
 
 **The Surface Continuity Rule.** Novos módulos reutilizam topo escuro, navegação clara, púrpura, campos e bordas do CRM; não introduzem uma identidade visual independente.
+
+### Guided spreadsheet import
+
+O importador reutiliza o diálogo amplo com cabeçalho e ações sticky. Instruções numeradas precedem os botões de modelo e backup, seguidas de um dicionário de campos expansível, entrada de arquivo rotulada e prévia com anúncio de atualização. O resumo usa superfície tonal, borda e cantos de (8px), com espaçamento de (16px); no celular, o resumo quebra linha e o total ocupa uma linha própria. A tabela mostra linha, ação, nome e identificação. Badges textuais distinguem criação e atualização; erros mostram linha, coluna e correção, acompanhados de relatório para download. O conteúdo rola dentro do diálogo sem deslocar as ações principais.
+
+**The Preview Before Commit Rule.** A ação de importar permanece desabilitada até existir uma prévia válida; a confirmação explícita antecede a gravação. Erros indicam como corrigir e selecionar novamente o arquivo. Formato e limites aparecem antes da seleção, sem comunicar suporte nativo a XLSX.
 
 ### Internal accounts and protected forms
 
@@ -235,7 +243,7 @@ Acesso interno preserva painel branco, borda, campos, botão principal e foco ex
 
 **The Access State Rule.** A interface distingue dados locais, configuração pendente, autenticação/carregamento e base compartilhada confirmada. Dados da equipe e navegação dos módulos só aparecem após o carregamento autorizado; falha de gravação comunica que a alteração não foi confirmada e oferece recuperação da tentativa. Esses estados não afirmam que um serviço já está provisionado.
 
-A extensão Supabase exige configuração externa; não está documentada aqui como implantação concluída. Não há envio de convite nem recuperação de senha por email implementados. A tela orienta procurar o administrador. As imagens `../../output/playwright/crm-users-desktop.png`, `crm-users-edit-mobile.png` e `crm-users-login-mobile.png` mostram fixtures sintéticas de teste, não contas reais nem evidência de serviço provisionado.
+O Supabase do CRM publicado está conectado e provisionado, conforme PRODUCT.md; a superfície de homologação permanece separada. Não há envio de convite nem recuperação de senha por email implementados. A tela orienta procurar o administrador. As imagens `../../output/playwright/crm-users-desktop.png`, `crm-users-edit-mobile.png` e `crm-users-login-mobile.png` mostram fixtures sintéticas de teste, não contas reais nem evidência isolada de provisionamento.
 
 ### Record-persistence homologation
 

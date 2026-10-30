@@ -7,5 +7,5 @@ if(!dependency||!existsSync(dependency)){
   process.exit(1);
 }
 const root=fileURLToPath(new URL('../',import.meta.url));
-const result=spawnSync(process.execPath,['--test','record-sync.test.mjs','records/core.test.mjs','records/work.test.mjs','records/http.test.mjs','model.test.mjs','operations.test.mjs','account.test.mjs','supabase/tests/internal-users.test.mjs'],{cwd:root,env:process.env,stdio:'inherit'});
+const result=spawnSync(process.execPath,['--test','--test-concurrency=1','import-dashboard.test.mjs','record-sync.test.mjs','records/core.test.mjs','records/work.test.mjs','records/http.test.mjs','model.test.mjs','operations.test.mjs','account.test.mjs','supabase/tests/internal-users.test.mjs'],{cwd:root,env:process.env,stdio:'inherit'});
 process.exit(result.status??1);

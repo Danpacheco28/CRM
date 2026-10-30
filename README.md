@@ -100,3 +100,6 @@ Primeira fatia backend isolada em [records/README.md](records/README.md): contat
 
 ## Publicação compatível na base atual
 O usuário autorizou atualizar a própria base Poliniza em30/10/2026. Ponte de gravação por entidade preparada em record-sync.mjs e migration202610300001_record_compat.sql, preservando todas as telas e módulos. Não é a UI sintética nem a normalização tipada completa: etapas/itens/anexos continuam dentro de suas entidades; leitura ainda recompõe a base. Instalação, ativação e publicação concluídas em 30/10/2026; conteúdo recomposto conferido integralmente com o backup e leitura/gravação autenticadas validadas. Procedimento e limites em [records/PRODUCTION-CUTOVER.md](records/PRODUCTION-CUTOVER.md). Não executar de novo a migration de usuários.
+
+## Importação e dashboards por pipeline
+Em Contatos e Produtos, use Importar planilha para baixar o modelo CSV UTF-8 e validar a prévia. Dashboards oferece Atividades, Funil comercial e Resultados prontos, sempre separados por pipeline. Consulte [IMPORTACAO-DASHBOARDS.md](IMPORTACAO-DASHBOARDS.md) para formatos, critérios dos indicadores e limites.

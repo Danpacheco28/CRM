@@ -62,6 +62,7 @@ export async function saveRecordChanges(rpc,actor,input,validateState){
   // Replay is checked by SQL before comparing versions. No duplicate mutation.
   const {data:receipt,error:receiptError}=await rpc('crm_record_receipt',{p_actor:actor,p_request:input.requestId,p_changes:input.changes});if(receiptError)throw Error(receiptError.message);
   if(receipt){const {data:confirmed,error:readError}=await rpc('crm_record_read',{p_actor:actor});if(readError)throw Error(readError.message);return {state:confirmed.payload,versions:confirmed.versions,mode:'records'};}
+  if(input.requireRevision!==undefined&&input.requireRevision!==context.revision)throw Error('CONFLICT: a base mudou desde a prévia de importação. Atualize e valide a planilha novamente.');
   for(const guard of input.guards||[]){if((context.versions[guard.collection+':'+guard.id]??0)!==guard.expected)throw Error('CONFLICT: uma configuração usada nesta alteração mudou. Atualize a base.');}
   const next=mergeRecordChanges(context,input.changes);validateState(next);validateRecordInvariants(next);
   const {error:saveError}=await rpc('crm_record_apply',{p_actor:actor,p_request:input.requestId,p_expected:context.revision,p_changes:input.changes,p_saved_at:next.savedAt});
