@@ -105,3 +105,5 @@ O usuário autorizou atualizar a própria base Poliniza em30/10/2026. Ponte de g
 Em Contatos e Produtos, use Importar planilha para baixar o modelo CSV UTF-8 e validar a prévia. Dashboards oferece Atividades, Funil comercial e Resultados prontos, sempre separados por pipeline. Consulte [IMPORTACAO-DASHBOARDS.md](IMPORTACAO-DASHBOARDS.md) para formatos, critérios dos indicadores e limites.
 
 Os dashboards prontos incluem cartões com cores semânticas, roscas de situação/conversão, barras mensais, distribuição por etapa, ranking de responsáveis e ticket médio. Gráficos usam apenas dados reais do pipeline e oferecem tabelas com valores exatos.
+
+Produtividade inclui Criadas, Agendadas, Atrasadas e Realizadas por tipo de atividade. Funil comercial inclui passagens/permanência/perdas, previsão ponderada e origem em barras horizontais. Histórico anterior é sinalizado como parcial; novas movimentações são registradas sem inferir passagens antigas. Veja os critérios no guia de importação/dashboards.

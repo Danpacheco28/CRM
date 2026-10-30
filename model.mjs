@@ -1,4 +1,4 @@
-import {normalizeOperations,validateOperations,guardOperationsDelete,processOperations} from './operations-model.mjs?v=20261030-2';
+import {normalizeOperations,validateOperations,guardOperationsDelete,processOperations} from './operations-model.mjs?v=20261030-4';
 export const STORAGE_KEY = 'crm-workspace-v2';
 export const LEGACY_KEY = 'crm-funil-v1';
 export const uid = () => crypto.randomUUID();
@@ -39,6 +39,7 @@ export function validateState(s) {
   }
   for(const c of s.contacts){requireValue(['organization','person'].includes(c.type)&&text(c.name,200)&&c.name.trim()&&Array.isArray(c.tags),'Contato inválido: informe nome e tipo.');requireValue(ref('contacts',c.organizationId),'A organização vinculada não existe.');if(c.organizationId)requireValue(c.type==='person'&&s.contacts.find(x=>x.id===c.organizationId)?.type==='organization','Vincule a pessoa a uma organização válida.');}
   for(const d of s.deals){const p=s.pipelines.find(p=>p.id===d.pipelineId);requireValue(p&&p.stages.some(st=>st.id===d.stageId),'O negócio precisa de pipeline e etapa existentes.');requireValue(text(d.title,200)&&d.title.trim()&&text(d.owner,150)&&d.owner.trim()&&number(d.value)&&['ativo','ganho','perdido'].includes(d.status)&&Array.isArray(d.tags),'Negócio inválido: confira título, responsável, status e valor.');requireValue(d.organizationId||d.personId,'Vincule uma organização ou pessoa ao negócio.');requireValue(ref('contacts',d.organizationId)&&ref('contacts',d.personId),'Contato do negócio não encontrado.');requireValue(!d.organizationId||s.contacts.find(c=>c.id===d.organizationId)?.type==='organization','Selecione uma organização válida.');requireValue(!d.personId||s.contacts.find(c=>c.id===d.personId)?.type==='person','Selecione uma pessoa válida.');requireValue(d.status!=='perdido'||text(d.lossReason,300)&&d.lossReason.trim(),'Informe o motivo da perda.');}
+  for(const d of s.deals){if(d.stageVisits!==undefined)requireValue(Array.isArray(d.stageVisits)&&d.stageVisits.length<=10000&&d.stageVisits.every(v=>v&&identifier(v.pipelineId)&&identifier(v.stageId)&&text(v.at,40)&&!Number.isNaN(Date.parse(v.at))&&(v.observed===undefined||typeof v.observed==='boolean')),'Histórico de etapas inválido.');if(d.stageTrackingComplete!==undefined)requireValue(typeof d.stageTrackingComplete==='boolean','Cobertura do histórico de etapas inválida.');if(d.stageTrackingComplete===true)requireValue(d.stageVisits?.length&&d.stageVisits.at(-1).pipelineId===d.pipelineId&&d.stageVisits.at(-1).stageId===d.stageId,'Histórico de etapas desatualizado. Atualize o CRM antes de mover o negócio.');}
   for(const a of s.activities)requireValue(text(a.title,200)&&a.title.trim()&&text(a.due,40)&&/^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}$/.test(a.due)&&!Number.isNaN(Date.parse(a.due))&&['pendente','concluida','cancelada'].includes(a.status)&&ref('deals',a.dealId)&&ref('contacts',a.contactId),'Atividade inválida: confira assunto, data e vínculos.');
   for(const d of s.deals)if(d.attachments){requireValue(Array.isArray(d.attachments)&&d.attachments.length<=10,'Limite de anexos excedido.');for(const a of d.attachments)requireValue(identifier(a.id)&&text(a.name,255)&&number(a.size,1048576)&&text(a.base64,1400000)&&/^[A-Za-z0-9+/]*={0,2}$/.test(a.base64),'Anexo inválido ou maior que 1 MB.');}
   for(const p of s.products)requireValue(text(p.name,200)&&p.name.trim()&&number(p.price)&&number(p.cost)&&number(p.quantity)&&text(p.unit,30),'Produto inválido: confira nome, preços e quantidade.');
@@ -85,7 +86,20 @@ export function convertQuoteToOrder(s,id) {
 }
 export function commit(storage,previous,mutate) {
   const current=storage.getItem(STORAGE_KEY);if(current&&JSON.parse(current).revision!==previous.revision)throw Error('Os dados mudaram em outra aba. Recarregue antes de salvar.');
-  const next=structuredClone(previous);const result=mutate(next);next.revision=previous.revision+1;next.savedAt=new Date().toISOString();processOperations(next,previous,next.savedAt);validateState(next);storage.setItem(STORAGE_KEY,JSON.stringify(next));return {state:next,result};
+  const next=structuredClone(previous);const result=mutate(next);next.revision=previous.revision+1;next.savedAt=new Date().toISOString();trackStageVisits(previous,next,next.savedAt);processOperations(next,previous,next.savedAt);validateState(next);storage.setItem(STORAGE_KEY,JSON.stringify(next));return {state:next,result};
+}
+export function trackStageVisits(previous,next,at){
+ const before=new Map(previous.deals.map(d=>[d.id,d]));
+ for(const d of next.deals){const old=before.get(d.id);if(old&&old.pipelineId===d.pipelineId&&old.stageId===d.stageId&&old.status===d.status)continue;
+  const visits=structuredClone(d.stageVisits||old?.stageVisits||[]);
+  if(!old){d.stageTrackingComplete=true;if(!visits.length)visits.push({pipelineId:d.pipelineId,stageId:d.stageId,at});}
+  else {d.stageTrackingComplete=old.stageTrackingComplete===true;
+   if(!visits.length)visits.push({pipelineId:old.pipelineId,stageId:old.stageId,at,observed:true});
+   if((old.pipelineId!==d.pipelineId||old.stageId!==d.stageId)&&(visits.at(-1)?.pipelineId!==d.pipelineId||visits.at(-1)?.stageId!==d.stageId))visits.push({pipelineId:d.pipelineId,stageId:d.stageId,at});
+  }
+  d.stageVisits=visits;
+  if(d.status!==old?.status){if(d.status==='ganho'){d.wonAt=at;d.closedAt=at;}else if(d.status==='perdido'){d.closedAt=at;d.wonAt='';}else {d.closedAt='';d.wonAt='';}}
+ }
 }
 export function parseCsv(input){
   const source=input.replace(/^\uFEFF/,'');const first=source.split(/\r?\n/)[0];const delimiter=first.includes(';')?';':',';const rows=[];let row=[],cell='',quoted=false;

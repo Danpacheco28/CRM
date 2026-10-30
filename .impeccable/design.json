@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-30T22:50:13.389Z",
+  "generatedAt": "2026-10-30T23:56:48.666Z",
   "title": "Design System: Poliniza CRM — Operação comercial",
   "extensions": {
     "shadows": [
@@ -219,9 +219,9 @@
     {
       "name": "Indicadores por pipeline",
       "kind": "custom",
-      "description": "Cartões semânticos com rótulo, valor e recorte no painel de cada pipeline.",
-      "html": "<dl class=\"ds-pipeline\"><div><dt>Realizadas</dt><dd>0</dd><small>Pela data de conclusão</small></div></dl><figure class=\"ds-chart\"><figcaption><h3>Conversão de negócios</h3><p>Somente negócios encerrados no período</p></figcaption><svg viewBox=\"0 0 160 160\" role=\"img\" aria-label=\"Sem dados\"><circle cx=\"80\" cy=\"80\" r=\"58\" fill=\"none\" stroke=\"var(--line,#e3dfe7)\" stroke-width=\"18\"/><text x=\"80\" y=\"86\" text-anchor=\"middle\">—</text></svg><p>Sem registros neste recorte.</p><details><summary>Ver dados do gráfico</summary><table><thead><tr><th>Situação</th><th>Quantidade</th></tr></thead><tbody><tr><td>Ganhos</td><td>0</td></tr><tr><td>Perdidos</td><td>0</td></tr></tbody></table></details></figure>",
-      "css": ".ds-pipeline{margin:0;display:grid;gap:12px;font-family:Arial,Helvetica,sans-serif}.ds-pipeline>div{padding:18px;border-radius:8px;background:#eaf5ef;color:var(--chart-green,#207453)}.ds-pipeline dt{font-size:12px;font-weight:600;margin-bottom:14px}.ds-pipeline dd{margin:0 0 10px;font-size:clamp(22px,2.2vw,32px);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.ds-pipeline small{font-size:11px;line-height:1.6}@media(max-width:760px){.ds-pipeline>div{padding:14px 12px}.ds-pipeline dd{font-size:23px}}.ds-chart{margin:24px 0 0;padding-bottom:18px;border-bottom:1px solid var(--line,#e3dfe7);font-family:Arial,Helvetica,sans-serif;color:var(--ink,#302b36)}.ds-chart h3{font-size:15px;margin:0 0 8px}.ds-chart p{font-size:12px;line-height:1.7;color:var(--muted,#68616e)}.ds-chart svg{display:block;width:172px;max-width:100%}.ds-chart svg text{fill:var(--ink,#302b36);font-size:28px;font-weight:700}.ds-chart details{font-size:12px;margin-top:16px}.ds-chart summary{color:var(--accent,#602878);padding:8px 0;cursor:pointer}.ds-chart summary:hover{text-decoration:underline}.ds-chart summary:focus-visible{outline:3px solid var(--focus,#80409b);outline-offset:3px}.ds-chart th,.ds-chart td{text-align:left;padding:10px;border-bottom:1px solid var(--line,#e3dfe7)}@media(max-width:760px){.ds-chart svg{width:144px}}"
+      "description": "Quatro medidas rotuladas, contagens tonais por tipo e grupos legíveis no celular.",
+      "html": "<section class=\"ds-productivity\"><h3>Resumo de produtividade</h3><dl><div class=\"ds-blue\"><dt>Criadas</dt><dd>0</dd></div><div class=\"ds-gold\"><dt>Agendadas</dt><dd>0</dd></div><div class=\"ds-red\"><dt>Atrasadas</dt><dd>0</dd></div><div class=\"ds-green\"><dt>Realizadas</dt><dd>0</dd></div></dl><h3>Atividades por tipo</h3><table><thead><tr><th scope=\"col\">Tipo</th><th scope=\"col\">Criadas</th><th scope=\"col\">Agendadas</th><th scope=\"col\">Atrasadas</th><th scope=\"col\">Realizadas</th></tr></thead><tbody><tr><th scope=\"row\">Email</th><td data-label=\"Criadas\"><span class=\"ds-blue\">0</span></td><td data-label=\"Agendadas\"><span class=\"ds-gold\">0</span></td><td data-label=\"Atrasadas\"><span class=\"ds-red\">0</span></td><td data-label=\"Realizadas\"><span class=\"ds-green\">0</span></td></tr></tbody></table><p>Exemplo sem registros. Histórico parcial de etapas usa ≥; conversão indisponível usa —.</p></section>",
+      "css": ".ds-productivity{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#302b36)}.ds-productivity h3{font-size:16px;margin:0 0 12px}.ds-productivity dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:12px;margin:0 0 26px}.ds-productivity dl>div{padding:18px;border-radius:8px}.ds-productivity dt{font-size:12px;font-weight:600;margin-bottom:14px}.ds-productivity dd{margin:0;font-size:clamp(22px,2.2vw,32px);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.ds-blue{background:#edf3fd;color:#285fb5}.ds-gold{background:#faf3e4;color:#80570e}.ds-red{background:#fceef0;color:#a42f3b}.ds-green{background:#eaf5ef;color:#207453}.ds-productivity table{border-collapse:collapse;width:100%;font-size:12px}.ds-productivity th,.ds-productivity td{padding:14px 16px;border-bottom:1px solid var(--line,#e3dfe7);text-align:center}.ds-productivity th:first-child{text-align:left}.ds-productivity td>span{display:inline-block;min-width:42px;padding:5px 9px;border-radius:5px;font-weight:700;font-variant-numeric:tabular-nums}.ds-productivity p{font-size:12px;line-height:1.7;color:var(--muted,#68616e)}@media(max-width:760px){.ds-productivity dl{grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}.ds-productivity dl>div{padding:14px 12px}.ds-productivity dd{font-size:23px}.ds-productivity table,.ds-productivity tbody{display:block;min-width:0;width:100%}.ds-productivity thead{position:absolute;width:1px;height:1px;overflow:hidden;clip-path:inset(50%)}.ds-productivity tbody tr{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:14px 8px;padding:16px 12px;border-bottom:1px solid var(--line,#e3dfe7)}.ds-productivity tbody th{grid-column:1/-1;padding:0;text-align:left;border:0;font-size:13px}.ds-productivity td{padding:0;border:0;text-align:left}.ds-productivity td:before{content:attr(data-label);display:block;font-size:11px;color:var(--muted,#68616e);line-height:1.5;margin-bottom:7px}.ds-productivity td>span{min-width:0;padding:5px 8px}}"
     },
     {
       "name": "Resumo da prévia de importação",
@@ -258,7 +258,17 @@
       },
       {
         "name": "Exact Chart",
-        "body": "Roscas, barras e rankings oferecem “Ver dados do gráfico” com tabela de valores; legendas e recortes permanecem visíveis. Sem registros, o desenho não simula resultados: mostra trilho vazio ou ausência de barras e uma mensagem explicativa. A linha temporal explicita a janela de seis meses.",
+        "body": "Valores exatos aparecem na própria tabela ou em “Ver dados do gráfico”; legendas e recortes permanecem visíveis. Sem registros, o desenho não simula resultados: mostra trilho vazio ou ausência de barras e uma mensagem explicativa. A linha temporal explicita a janela de seis meses.",
+        "section": "components"
+      },
+      {
+        "name": "Comparable Measures",
+        "body": "Barras de tipos e origens partem de uma base comum e mostram a quantidade correspondente. Criadas, Agendadas, Atrasadas e Realizadas mantêm rótulos de data e estado; não são empilhadas como parcelas de um único total.",
+        "section": "components"
+      },
+      {
+        "name": "Historical Evidence",
+        "body": "Passagens com cobertura parcial exibem o sinal “≥” e aviso de histórico parcial; conversões sem evidência suficiente exibem “—”. A sinalização acompanha a tabela e não apresenta o rastreamento prospectivo como reconstrução do passado ou auditoria imutável.",
         "section": "components"
       },
       {
