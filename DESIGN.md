@@ -35,6 +35,22 @@ colors:
   tag-text: "#5d326e"
   won: "#246c51"
   lost: "#a63737"
+  chart-blue: "#285fb5"
+  chart-green: "#207453"
+  chart-red: "#b53c47"
+  chart-gold: "#916516"
+  chart-teal: "#137c83"
+  chart-purple: "#703998"
+  chart-neutral: "#797184"
+  metric-blue-background: "#edf3fd"
+  metric-green-background: "#eaf5ef"
+  metric-red-background: "#fceef0"
+  metric-red-text: "#a42f3b"
+  metric-gold-background: "#faf3e4"
+  metric-gold-text: "#80570e"
+  metric-teal-background: "#eaf6f6"
+  metric-teal-text: "#116c73"
+  metric-purple-background: "#f2ecf7"
 typography:
   headline:
     fontFamily: "Arial, Helvetica, sans-serif"
@@ -50,8 +66,9 @@ typography:
     fontWeight: 700
   dashboard-metric:
     fontFamily: "Arial, Helvetica, sans-serif"
-    fontSize: "27px"
-    fontWeight: 600
+    fontSize: "clamp(22px, 2.2vw, 32px)"
+    fontWeight: 700
+    letterSpacing: "-0.02em"
   metric:
     fontFamily: "Arial, Helvetica, sans-serif"
     fontSize: "23px"
@@ -110,7 +127,7 @@ components:
 
 ## Overview
 
-Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js`, `operations-ui.mjs` e `import-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o sistema Poliniza implementado, sem atribuir ao produto original comportamentos adicionados na implementação.
+Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js`, `operations-ui.mjs` `import-ui.mjs` e `dashboard-charts.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o sistema Poliniza implementado, sem atribuir ao produto original comportamentos adicionados na implementação.
 
 A interface combina topo escuro, controles em púrpura e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Marca Poliniza CRM confirmada pelo usuário; emblema dourado sobre púrpura fornecido em 25/10/2026.
 
@@ -133,19 +150,25 @@ A homologação de gravação por registro amplia o mesmo sistema em `homologaca
 
 O púrpura `accent` identifica ações principais, visualização selecionada e títulos interativos em hover; `accent-hover` escurece a resposta do controle. O topo usa `topbar`; o emblema dourado original identifica a marca. O dourado `brand-gold` é reservado ao foco dos controles no topo, e `brand-gold-line` forma seu divisor inferior de (1px).
 
+### Secondary
+
+A leitura dos dashboards usa `chart-blue` para criação e entradas, `chart-green` para realizações e ganhos, `chart-red` para atrasos e perdas, `chart-gold` para pendências, `chart-teal` para valores e `chart-purple` para negociação/conversão. `chart-neutral` representa cancelamentos. Esses acentos são autorizados para visualização de dados; o púrpura da marca continua identificando ações e seleção.
+
 ### Neutral
 
 `ink` estrutura o texto e `muted` carrega metadados. `paper` é a superfície de formulários, cartões e ferramentas; `surface` é o plano de fundo. `stage` distingue cabeçalhos e `board` define o fundo do quadro. `line` separa superfícies; `control-border` delimita campos.
 
 ### Semantic
 
-`focus` é o contorno visível de teclado. `won` e `lost` distinguem métricas de encerramento, acompanhadas de rótulos textuais. As tags usam a combinação `tag-background` e `tag-text`.
+`focus` é o contorno visível de teclado. `won` e `lost` distinguem métricas de encerramento, acompanhadas de rótulos textuais. As tags usam a combinação `tag-background` e `tag-text`. Os cartões de métricas combinam fundos tonais `metric-*-background` com texto da família correspondente; atraso, pendência e valor usam as variantes de texto específicas registradas no frontmatter.
+
+**The Labeled Color Rule.** Toda cor de dado acompanha rótulo e valor. Segmentos, barras e cartões usam a mesma família semântica; a informação exata permanece disponível em tabela.
 
 ## Typography
 
 Arial, Helvetica e sans-serif são compartilhadas por toda a interface, incluindo controles. A base é compacta, sem fontes externas. O título de página usa headline, o diálogo usa dialog-title e painéis usam panel-title; nomes de negócios usam title. Metadados, rótulos e cabeçalhos usam tamanhos menores. A base atual é (14px); legendas e navegação têm tamanhos locais de (10px) a (13px).
 
-Cabeçalhos das etapas são maiúsculos, com espaçamento entre letras de `.03em` e entrelinha de `1.5`. Valores monetários usam números tabulares. Não existe escala display nem fonte editorial distinta.
+Cabeçalhos das etapas são maiúsculos, com espaçamento entre letras de `.03em` e entrelinha de `1.5`. Valores monetários usam números tabulares. Não existe escala display nem fonte editorial distinta. Nos dashboards, valores principais usam dashboard-metric, peso (700), números tabulares e (23px) no celular; títulos de gráfico usam (15px), legendas e notas (12px). O centro das roscas usa (28px), reduzido a (25px). Eixos SVG usam (11px) no espaço de desenho e (17px) no breakpoint móvel para compensar a redução do gráfico.
 
 ## Layout
 
@@ -165,7 +188,7 @@ Na homologação, o topo usa altura automática, mínimo de (56px) e preenchimen
 
 ## Elevation & Depth
 
-O quadro e seus cartões usam bordas e fundos, sem sombra em repouso. Diálogos usam `0 20px 70px #13283040` e backdrop `#14232c70`. Avisos flutuantes usam `0 6px 20px #203f3c33` e ficam a (24px) da base. A lateral móvel aberta usa `8px 8px 24px #302b3620`. Não há transições ou animações definidas no CSS atual.
+O quadro e seus cartões usam bordas e fundos, sem sombra em repouso. Diálogos usam `0 20px 70px #13283040` e backdrop `#14232c70`. Avisos flutuantes usam `0 6px 20px #203f3c33` e ficam a (24px) da base. A lateral móvel aberta usa `8px 8px 24px #302b3620`. A única transição dos gráficos é a opacidade das barras em hover (`.15s ease-out`), aplicada somente quando não há preferência por movimento reduzido. A leitura e os valores não dependem dessa transição.
 
 ## Shapes
 
@@ -225,7 +248,12 @@ Prévia de email usa superfície tonal, borda e cantos de (8px), preenchimento d
 
 ### Management dashboards and goals
 
-Dashboards apresentam três seletores prontos em botões com estado pressionado textual e púrpura. Abaixo ficam período, responsável e pipeline, atalhos de período e uma comparação tabular. Cada pipeline ocupa um painel próprio com nome, contexto e ação para isolá-lo. Valores usam (26px), peso (700) e algarismos tabulares, reduzidos a (22px) no celular; legendas usam (12px) e contexto de data usa (11px). A faixa possui divisores horizontais e preenchimento vertical de (20px), reduzido a (16px) no celular. Listas de atividades atrasadas e futuras usam duas colunas no desktop e uma no celular. A comparação mantém rolagem interna, foco de teclado e instrução móvel. Metas reutilizam painéis, badges de situação e barras de progresso.
+Dashboards apresentam três seletores prontos em botões com estado pressionado textual e púrpura. Abaixo ficam período, responsável e pipeline, atalhos de período e uma comparação tabular expansível. Cada pipeline ocupa um painel próprio com nome, contexto e ação para isolá-lo. Os indicadores usam cartões tonais, cantos de (8px), intervalo de (12px) e preenchimento de (18px); rótulo, valor e nota compartilham a família semântica. Valores usam dashboard-metric e a faixa não recebe bordas horizontais. No celular, os cartões usam intervalo de (10px), preenchimento de (14px 12px) e valores de (23px); o último cartão da visão comercial ocupa as duas colunas. Listas de atividades atrasadas e futuras usam duas colunas no desktop e uma no celular. A comparação mantém rolagem interna, foco de teclado e instrução móvel. Metas reutilizam painéis, badges de situação e barras de progresso.
+
+Gráficos ocupam duas colunas de proporção (.85fr/1.15fr), com intervalos de (26px 30px); o último gráfico de um conjunto ímpar ocupa a largura inteira. Até (760px), a grade passa a uma coluna com intervalo de (24px). Cada figura reúne título, recorte, desenho e detalhe expansível de dados. Roscas combinam segmentos, valor central e legenda textual; sua largura passa de (172px) para (144px) no celular. Entre (761px) e (1100px), a legenda fica abaixo da rosca. Barras mensais mantêm proporção SVG, grade discreta e rótulos de mês compactos; o eixo monetário reserva espaço à esquerda para seus rótulos. Rankings usam barras horizontais, posição, responsável, valor e contagem. Etapas comerciais usam barras de (24px) com quantidade e valor visíveis.
+
+**The Exact Chart Rule.** Roscas, barras e rankings oferecem “Ver dados do gráfico” com tabela de valores; legendas e recortes permanecem visíveis. Sem registros, o desenho não simula resultados: mostra trilho vazio ou ausência de barras e uma mensagem explicativa. A linha temporal explicita a janela de seis meses.
+
 
 **The Pipeline Context Rule.** Nome do pipeline, recorte e sentido da data permanecem visíveis junto aos valores. Pipelines são separados por ID, inclusive quando seus nomes coincidem; atividades sem vínculo aparecem em “Sem pipeline”. Cores semânticas reforçam os rótulos, sem substituí-los.
 

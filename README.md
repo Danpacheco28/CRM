@@ -103,3 +103,5 @@ O usuário autorizou atualizar a própria base Poliniza em30/10/2026. Ponte de g
 
 ## Importação e dashboards por pipeline
 Em Contatos e Produtos, use Importar planilha para baixar o modelo CSV UTF-8 e validar a prévia. Dashboards oferece Atividades, Funil comercial e Resultados prontos, sempre separados por pipeline. Consulte [IMPORTACAO-DASHBOARDS.md](IMPORTACAO-DASHBOARDS.md) para formatos, critérios dos indicadores e limites.
+
+Os dashboards prontos incluem cartões com cores semânticas, roscas de situação/conversão, barras mensais, distribuição por etapa, ranking de responsáveis e ticket médio. Gráficos usam apenas dados reais do pipeline e oferecem tabelas com valores exatos.

@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-30T22:31:39.927Z",
+  "generatedAt": "2026-10-30T22:50:13.389Z",
   "title": "Design System: Poliniza CRM — Operação comercial",
   "extensions": {
     "shadows": [
@@ -20,7 +20,13 @@
         "purpose": "Separar a navegação móvel fixa do conteúdo."
       }
     ],
-    "motion": [],
+    "motion": [
+      {
+        "name": "chart-bar-hover",
+        "value": "opacity .15s ease-out",
+        "purpose": "Hover de barras para preferência sem movimento reduzido; opacidade final de .75."
+      }
+    ],
     "breakpoints": [
       {
         "value": "760px",
@@ -34,7 +40,120 @@
         "value": "1700px",
         "name": "wide"
       }
-    ]
+    ],
+    "colorMeta": {
+      "chart-blue": {
+        "role": "secondary",
+        "displayName": "Azul de criação",
+        "canonical": "#285fb5",
+        "tonalRamp": [
+          "oklch(0.150 0.148 259.2)",
+          "oklch(0.264 0.148 259.2)",
+          "oklch(0.379 0.148 259.2)",
+          "oklch(0.493 0.148 259.2)",
+          "oklch(0.607 0.148 259.2)",
+          "oklch(0.721 0.148 259.2)",
+          "oklch(0.836 0.148 259.2)",
+          "oklch(0.950 0.148 259.2)"
+        ]
+      },
+      "chart-green": {
+        "role": "secondary",
+        "displayName": "Verde de realização",
+        "canonical": "#207453",
+        "tonalRamp": [
+          "oklch(0.150 0.096 162.6)",
+          "oklch(0.264 0.096 162.6)",
+          "oklch(0.379 0.096 162.6)",
+          "oklch(0.493 0.096 162.6)",
+          "oklch(0.607 0.096 162.6)",
+          "oklch(0.721 0.096 162.6)",
+          "oklch(0.836 0.096 162.6)",
+          "oklch(0.950 0.096 162.6)"
+        ]
+      },
+      "chart-red": {
+        "role": "secondary",
+        "displayName": "Vermelho de atraso/perda",
+        "canonical": "#b53c47",
+        "tonalRamp": [
+          "oklch(0.150 0.156 19.0)",
+          "oklch(0.264 0.156 19.0)",
+          "oklch(0.379 0.156 19.0)",
+          "oklch(0.493 0.156 19.0)",
+          "oklch(0.607 0.156 19.0)",
+          "oklch(0.721 0.156 19.0)",
+          "oklch(0.836 0.156 19.0)",
+          "oklch(0.950 0.156 19.0)"
+        ]
+      },
+      "chart-gold": {
+        "role": "secondary",
+        "displayName": "Dourado de pendências",
+        "canonical": "#916516",
+        "tonalRamp": [
+          "oklch(0.150 0.105 76.3)",
+          "oklch(0.264 0.105 76.3)",
+          "oklch(0.379 0.105 76.3)",
+          "oklch(0.493 0.105 76.3)",
+          "oklch(0.607 0.105 76.3)",
+          "oklch(0.721 0.105 76.3)",
+          "oklch(0.836 0.105 76.3)",
+          "oklch(0.950 0.105 76.3)"
+        ]
+      },
+      "chart-teal": {
+        "role": "secondary",
+        "displayName": "Azul-petróleo de valor",
+        "canonical": "#137c83",
+        "tonalRamp": [
+          "oklch(0.150 0.087 202.1)",
+          "oklch(0.264 0.087 202.1)",
+          "oklch(0.379 0.087 202.1)",
+          "oklch(0.493 0.087 202.1)",
+          "oklch(0.607 0.087 202.1)",
+          "oklch(0.721 0.087 202.1)",
+          "oklch(0.836 0.087 202.1)",
+          "oklch(0.950 0.087 202.1)"
+        ]
+      },
+      "chart-purple": {
+        "role": "secondary",
+        "displayName": "Púrpura de negociação",
+        "canonical": "#703998",
+        "tonalRamp": [
+          "oklch(0.150 0.153 308.2)",
+          "oklch(0.264 0.153 308.2)",
+          "oklch(0.379 0.153 308.2)",
+          "oklch(0.493 0.153 308.2)",
+          "oklch(0.607 0.153 308.2)",
+          "oklch(0.721 0.153 308.2)",
+          "oklch(0.836 0.153 308.2)",
+          "oklch(0.950 0.153 308.2)"
+        ]
+      },
+      "chart-neutral": {
+        "role": "neutral",
+        "displayName": "Cinza de cancelamento",
+        "canonical": "#797184",
+        "tonalRamp": [
+          "oklch(0.150 0.030 304.5)",
+          "oklch(0.264 0.030 304.5)",
+          "oklch(0.379 0.030 304.5)",
+          "oklch(0.493 0.030 304.5)",
+          "oklch(0.607 0.030 304.5)",
+          "oklch(0.721 0.030 304.5)",
+          "oklch(0.836 0.030 304.5)",
+          "oklch(0.950 0.030 304.5)"
+        ]
+      }
+    },
+    "typographyMeta": {
+      "dashboard-metric": {
+        "displayName": "Valor principal do dashboard",
+        "purpose": "Valor tabular em cartão tonal; clamp22–32px, peso700 e23px no celular."
+      }
+    }
   },
   "components": [
     {
@@ -100,9 +219,9 @@
     {
       "name": "Indicadores por pipeline",
       "kind": "custom",
-      "description": "Nome e recorte associados a cada faixa de valores, com leitura em duas colunas no celular.",
-      "html": "<section class=\"ds-pipeline\"><h2>Pipeline</h2><p>Recorte selecionado</p><dl><div><dt>Criadas</dt><dd>0</dd><small>Pela data de criação</small></div><div><dt>Realizadas</dt><dd>0</dd><small>Pela data de conclusão</small></div><div><dt>Em atraso agora</dt><dd>0</dd><small>Vencimento no período</small></div><div><dt>Pendentes</dt><dd>0</dd><small>Vencimento no período</small></div></dl></section>",
-      "css": ".ds-pipeline{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#302b36);background:var(--paper,#fff);border:1px solid var(--line,#e3dfe7);border-radius:10px;padding:22px}.ds-pipeline h2{font-size:17px;margin:0 0 8px}.ds-pipeline p{font-size:12px;color:var(--muted,#68616e);margin:0 0 22px}.ds-pipeline dl{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));border-block:1px solid var(--line,#e3dfe7);margin:0}.ds-pipeline dl>div{padding:20px 16px 20px 0;min-width:0}.ds-pipeline dt{font-size:12px;color:var(--muted,#68616e);margin-bottom:12px}.ds-pipeline dd{margin:0 0 10px;font-size:26px;font-weight:700;font-variant-numeric:tabular-nums}.ds-pipeline small{font-size:11px;color:var(--muted,#68616e);line-height:1.6}@media(max-width:760px){.ds-pipeline dl{grid-template-columns:repeat(2,minmax(0,1fr))}.ds-pipeline dl>div{padding:16px 12px 16px 0}.ds-pipeline dd{font-size:22px}}"
+      "description": "Cartões semânticos com rótulo, valor e recorte no painel de cada pipeline.",
+      "html": "<dl class=\"ds-pipeline\"><div><dt>Realizadas</dt><dd>0</dd><small>Pela data de conclusão</small></div></dl><figure class=\"ds-chart\"><figcaption><h3>Conversão de negócios</h3><p>Somente negócios encerrados no período</p></figcaption><svg viewBox=\"0 0 160 160\" role=\"img\" aria-label=\"Sem dados\"><circle cx=\"80\" cy=\"80\" r=\"58\" fill=\"none\" stroke=\"var(--line,#e3dfe7)\" stroke-width=\"18\"/><text x=\"80\" y=\"86\" text-anchor=\"middle\">—</text></svg><p>Sem registros neste recorte.</p><details><summary>Ver dados do gráfico</summary><table><thead><tr><th>Situação</th><th>Quantidade</th></tr></thead><tbody><tr><td>Ganhos</td><td>0</td></tr><tr><td>Perdidos</td><td>0</td></tr></tbody></table></details></figure>",
+      "css": ".ds-pipeline{margin:0;display:grid;gap:12px;font-family:Arial,Helvetica,sans-serif}.ds-pipeline>div{padding:18px;border-radius:8px;background:#eaf5ef;color:var(--chart-green,#207453)}.ds-pipeline dt{font-size:12px;font-weight:600;margin-bottom:14px}.ds-pipeline dd{margin:0 0 10px;font-size:clamp(22px,2.2vw,32px);font-weight:700;letter-spacing:-.02em;font-variant-numeric:tabular-nums}.ds-pipeline small{font-size:11px;line-height:1.6}@media(max-width:760px){.ds-pipeline>div{padding:14px 12px}.ds-pipeline dd{font-size:23px}}.ds-chart{margin:24px 0 0;padding-bottom:18px;border-bottom:1px solid var(--line,#e3dfe7);font-family:Arial,Helvetica,sans-serif;color:var(--ink,#302b36)}.ds-chart h3{font-size:15px;margin:0 0 8px}.ds-chart p{font-size:12px;line-height:1.7;color:var(--muted,#68616e)}.ds-chart svg{display:block;width:172px;max-width:100%}.ds-chart svg text{fill:var(--ink,#302b36);font-size:28px;font-weight:700}.ds-chart details{font-size:12px;margin-top:16px}.ds-chart summary{color:var(--accent,#602878);padding:8px 0;cursor:pointer}.ds-chart summary:hover{text-decoration:underline}.ds-chart summary:focus-visible{outline:3px solid var(--focus,#80409b);outline-offset:3px}.ds-chart th,.ds-chart td{text-align:left;padding:10px;border-bottom:1px solid var(--line,#e3dfe7)}@media(max-width:760px){.ds-chart svg{width:144px}}"
     },
     {
       "name": "Resumo da prévia de importação",
@@ -114,7 +233,7 @@
   ],
   "narrative": {
     "northStar": "",
-    "overview": "Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js`, `operations-ui.mjs` e `import-ui.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o sistema Poliniza implementado, sem atribuir ao produto original comportamentos adicionados na implementação.\n\nA interface combina topo escuro, controles em púrpura e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Marca Poliniza CRM confirmada pelo usuário; emblema dourado sobre púrpura fornecido em 25/10/2026.\n\nAtualização v2: ampliação autorizada para módulos CRM e pipelines configuráveis, preservando a identidade do primeiro funil. Evidências de interface: ../../output/playwright/crm-v2-desktop.png, crm-v2-stages.png, crm-v2-mobile.png e crm-v2-mobile-detail.png. A tipografia Arial foi mantida como decisão de continuidade, apesar do aviso do detector; novos tamanhos e fundos semânticos refletem o CSS atual.\n\nA ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda, jornadas, campanhas e gestão. Os novos elementos reutilizam painéis, tabelas, campos e estados existentes; progressos e etapas numeradas explicitam sequência e andamento.\n\nA homologação de gravação por registro amplia o mesmo sistema em `homologacao/index.html`, `homologacao/app.mjs` e `homologacao/style.css`. O aviso permanente identifica dados fictícios, ausência de login real e descarte dos dados ao reiniciar o servidor local. A superfície de teste não representa implantação remota nem migração do CRM publicado.",
+    "overview": "Registro em modo scan do sistema implementado em `styles.css`, `index.html`, `app.js`, `operations-ui.mjs` `import-ui.mjs` e `dashboard-charts.mjs`. A referência indicada é `../../output/playwright/leads2b-funil.png`; este documento descreve o sistema Poliniza implementado, sem atribuir ao produto original comportamentos adicionados na implementação.\n\nA interface combina topo escuro, controles em púrpura e superfícies claras para organizar uma operação comercial densa. A linguagem é funcional: texto curto, bordas discretas e colunas contínuas. Marca Poliniza CRM confirmada pelo usuário; emblema dourado sobre púrpura fornecido em 25/10/2026.\n\nAtualização v2: ampliação autorizada para módulos CRM e pipelines configuráveis, preservando a identidade do primeiro funil. Evidências de interface: ../../output/playwright/crm-v2-desktop.png, crm-v2-stages.png, crm-v2-mobile.png e crm-v2-mobile-detail.png. A tipografia Arial foi mantida como decisão de continuidade, apesar do aviso do detector; novos tamanhos e fundos semânticos refletem o CSS atual.\n\nA ampliação operacional mantém o mesmo sistema para projetos, tarefas, agenda, jornadas, campanhas e gestão. Os novos elementos reutilizam painéis, tabelas, campos e estados existentes; progressos e etapas numeradas explicitam sequência e andamento.\n\nA homologação de gravação por registro amplia o mesmo sistema em `homologacao/index.html`, `homologacao/app.mjs` e `homologacao/style.css`. O aviso permanente identifica dados fictícios, ausência de login real e descarte dos dados ao reiniciar o servidor local. A superfície de teste não representa implantação remota nem migração do CRM publicado.",
     "keyCharacteristics": [
       "Colunas comerciais persistentes com rolagem horizontal.",
       "Púrpura para ações principais e seleção.",
@@ -123,6 +242,11 @@
     ],
     "rules": [
       {
+        "name": "Labeled Color",
+        "body": "Toda cor de dado acompanha rótulo e valor. Segmentos, barras e cartões usam a mesma família semântica; a informação exata permanece disponível em tabela.",
+        "section": "colors"
+      },
+      {
         "name": "Restrained Brand",
         "body": "Púrpura identifica ação e seleção sobre superfícies claras; dourado fica no emblema e nos detalhes do topo. Estados de ganho, perda e alerta mantêm as cores semânticas existentes. Não ampliar a marca para fundos saturados de tabelas ou quadros.",
         "section": "components"
@@ -130,6 +254,11 @@
       {
         "name": "Progress",
         "body": "Andamento é mostrado por barra nativa acompanhada de percentual e contexto textual. O trilho usa `progress-track`, preenchimento `accent`, altura de (9px) e cantos de (4px); valores visuais ficam limitados ao máximo da barra.",
+        "section": "components"
+      },
+      {
+        "name": "Exact Chart",
+        "body": "Roscas, barras e rankings oferecem “Ver dados do gráfico” com tabela de valores; legendas e recortes permanecem visíveis. Sem registros, o desenho não simula resultados: mostra trilho vazio ou ausência de barras e uma mensagem explicativa. A linha temporal explicita a janela de seis meses.",
         "section": "components"
       },
       {
