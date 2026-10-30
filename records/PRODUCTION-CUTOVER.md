@@ -1,6 +1,6 @@
 # Publicação na base atual — transição compatível
 
-Preparação de30/10/2026, autorizada pelo usuário para o projeto atual Poliniza. **Aguardando autenticação no painel para instalação e publicação; nenhum corte remoto realizado.**
+Preparação de30/10/2026, autorizada pelo usuário para o projeto atual Poliniza. **Instalação, publicação e ativação concluídas em30/10/2026 na base atual, com backup privado e comparação integral de conteúdo.**
 
 ## Decisão técnica
 
@@ -39,3 +39,6 @@ Antes da ativação, código antigo e snapshot continuam sendo o ambiente ativo.
 55 testes Node/SQL/HTTP passaram sem skips (incluindo9 casos da ponte, com subtestes). Migração preserva coleções/configuração/extensões/ordem, congela backup, bloqueia aba antiga; editores independentes persistem, mesmo registro conflita, SQL inválido faz rollback, servidor rebaseia corrida e recibo impede replay divergente. Revogação e ACLs verificadas. Entrada Deno e bundle validaram.
 
 UI completa testada na porta4182 com Auth simulado e banco PGlite real em memória: criou contato/negócio, projeto, atividade recorrente, rascunho de campanha e meta; todos apareceram em mode records. Requests de gravação tinham changes/guards/requestId, sem campo state. Nenhuma mensagem enviada. Esse teste não equivale a Auth/Supabase remoto nem a carga PostgreSQL multiconexão.
+
+## Resultado da implantação
+Migration aditiva e função publicadas; modo records ativado após conferir a revisão de corte. Payload recomposto idêntico ao backup anterior, inclusive ordem/vínculos/campos. Snapshot preservado no banco e cópias privadas fora do repositório. Smoke autenticado leu o novo modo e confirmou uma gravação idêntica de configurações, sem mudar valores comerciais. Tentativa de cliente antigo recebeu409 e não alterou a revisão. Frontend e novo módulo retornaram200 e hashes iguais aos locais; workflow41134077586 success, commit de runtime e03e74285f65040c06b1fb9719b2c4194c18a7f6. Nenhum dado fictício da homologação foi importado.

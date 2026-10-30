@@ -67,7 +67,7 @@ O botão CSV exporta os registros filtrados do módulo atual. Campos iniciados p
 
 ## Publicar no GitHub Pages
 
-Arquivos necessários: `index.html`, `styles.css`, `app.js`, `model.mjs`, `operations-model.mjs`, `operations-ui.mjs`, `connection.mjs`, `account-client.mjs` e `accounts-ui.mjs`. Envie-os na raiz junto de `.nojekyll`. O servidor Node é apenas para uso local. A função Supabase é publicada separadamente.
+Arquivos necessários: `index.html`, `styles.css`, `app.js`, `model.mjs`, `operations-model.mjs`, `operations-ui.mjs`, `connection.mjs`, `account-client.mjs`, `accounts-ui.mjs` e `record-sync.mjs`. Envie-os na raiz junto de `.nojekyll`. O servidor Node é apenas para uso local. A função Supabase é publicada separadamente.
 
 Em **Settings → Pages**, mantenha **Deploy from a branch → main → /(root)**. O site já usa caminhos relativos para funcionar no subdiretório `/CRM/`. Não enviar sessões de navegador, exportações de clientes, credenciais ou a pasta de memória junto do código.
 
@@ -90,7 +90,7 @@ O roteiro `verify-operations.cjs` usa um perfil local descartável na porta 4175
 
 ## Limites desta versão
 
-A persistência compartilhada inicial usa snapshot JSON transacional de até 15 MB, incluindo anexos. Todos os colaboradores acessam a mesma base; ainda não há carteira individual por vendedor. Use **Atualizar base** para buscar alterações de outras pessoas. Conflitos de revisão são recusados para evitar sobrescrita; a tentativa não salva pode ser exportada antes de refazer a alteração. O administrador inicial escolheu começar com base vazia; dados locais antigos não foram apagados.
+A base Poliniza usa gravação por entidade desde 30/10/2026. Apenas registros alterados são enviados e cada um possui sua própria versão. O carregamento ainda recompõe a base completa; etapas/itens/anexos permanecem dentro da respectiva entidade. Operações têm limite de 2.000 registros e 15 MB por lote. Todos os colaboradores acessam a mesma base; ainda não há carteira individual por vendedor. Use **Atualizar base** para buscar alterações de outras pessoas. Conflitos na versão dos registros ou configurações usadas são recusados para evitar sobrescrita; a tentativa não salva pode ser exportada antes de refazer a alteração. O administrador inicial escolheu começar com base vazia; dados locais antigos não foram apagados.
 
 Backups comerciais não substituem o backup do banco e das contas Auth. Recuperação de senha por email e restauração do snapshot compartilhado ainda não estão habilitadas; consulte o procedimento temporário em CONFIGURACAO-USUARIOS.md.
 
@@ -99,4 +99,4 @@ Sem envio automático de email/WhatsApp, captação pública, integração bidir
 Primeira fatia backend isolada em [records/README.md](records/README.md): contatos, pipelines, etapas, negócios e histórico. Não conectada ao aplicativo publicado nem instalada no projeto ativo. SQL, importador e repositório com versões individuais, transações, idempotência e paginação. Roteiro `node scripts/test-records.mjs` exige PGlite descartável configurado e executa todos os testes existentes e novos.
 
 ## Publicação compatível na base atual
-O usuário autorizou atualizar a própria base Poliniza em30/10/2026. Ponte de gravação por entidade preparada em record-sync.mjs e migration202610300001_record_compat.sql, preservando todas as telas e módulos. Não é a UI sintética nem a normalização tipada completa: etapas/itens/anexos continuam dentro de suas entidades; leitura ainda recompõe a base. Instalação/ativação/publicação aguardam login do usuário no Supabase. Procedimento e limites em [records/PRODUCTION-CUTOVER.md](records/PRODUCTION-CUTOVER.md). Não executar de novo a migration de usuários.
+O usuário autorizou atualizar a própria base Poliniza em30/10/2026. Ponte de gravação por entidade preparada em record-sync.mjs e migration202610300001_record_compat.sql, preservando todas as telas e módulos. Não é a UI sintética nem a normalização tipada completa: etapas/itens/anexos continuam dentro de suas entidades; leitura ainda recompõe a base. Instalação, ativação e publicação concluídas em 30/10/2026; conteúdo recomposto conferido integralmente com o backup e leitura/gravação autenticadas validadas. Procedimento e limites em [records/PRODUCTION-CUTOVER.md](records/PRODUCTION-CUTOVER.md). Não executar de novo a migration de usuários.

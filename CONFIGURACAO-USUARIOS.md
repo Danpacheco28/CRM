@@ -13,7 +13,7 @@ Enquanto `connection.mjs` estiver vazio, o aplicativo continua no modo local ant
 
 ## 2. Instalar as tabelas e as regras
 
-No **SQL Editor**, execute uma vez o conteúdo de `supabase/migrations/202610230001_internal_users.sql` deste projeto. O arquivo cria membros, base compartilhada, auditoria de acessos e funções transacionais.
+No **SQL Editor**, execute uma vez o conteúdo de `supabase/migrations/202610230001_internal_users.sql` deste projeto. O arquivo cria membros, base compartilhada, auditoria de acessos e funções transacionais. Em seguida, execute uma vez `supabase/migrations/202610300001_record_compat.sql`, exigida pela versão atual da função. Não repita migrations já instaladas. A segunda migration mantém snapshot até a ativação administrativa, conforme records/PRODUCTION-CUTOVER.md.
 
 As tabelas não concedem acesso direto ao navegador. A função de servidor verifica a identidade com Supabase Auth, confere a situação do usuário e autoriza cada operação. Alterações de usuários e gravações são serializadas no banco. Não remova essas verificações nem libere tabelas para `anon`/`authenticated`.
 
@@ -68,7 +68,7 @@ Se o único administrador perder o acesso, o proprietário do projeto Supabase d
 
 ## Limites e validação antes do uso real
 
-- A primeira persistência compartilhada usa um snapshot JSON transacional, com limite de 15 MB incluindo anexos. Não é o modelo final de tabelas por módulo para grandes equipes.
+- A instalação atual Poliniza usa linhas por entidade com versões individuais; o snapshot pré-migração é um backup congelado. Leitura completa, estruturas aninhadas e anexos embutidos permanecem. Não é ainda o modelo tipado final para grandes equipes.
 - A base é carregada ao entrar e pelo botão **Atualizar base**. Se outra pessoa gravar antes, a gravação seguinte é recusada para evitar sobrescrever dados; exporte a tentativa, atualize e refaça a alteração.
 - Após falha de gravação, o aplicativo volta à última base confirmada e permite exportar a tentativa não salva. Restaurar backups diretamente na base compartilhada não está habilitado nesta etapa.
 - Jornada/campanha continua dependendo do aplicativo aberto; não foi instalado agendador contínuo nem provedor de email.
