@@ -1,4 +1,4 @@
-import {normalizeOperations,validateOperations,guardOperationsDelete,processOperations} from './operations-model.mjs?v=20261030-4';
+import {normalizeOperations,validateOperations,guardOperationsDelete,processOperations} from './operations-model.mjs?v=20261030-5';
 export const STORAGE_KEY = 'crm-workspace-v2';
 export const LEGACY_KEY = 'crm-funil-v1';
 export const uid = () => crypto.randomUUID();

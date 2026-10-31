@@ -1,4 +1,4 @@
-import {importSchemas,importTemplate,planImport,applyImport} from './import-model.mjs?v=20261030-4';
+import {importSchemas,importTemplate,planImport,applyImport} from './import-model.mjs?v=20261030-5';
 export function createImportUI(api){
  const {esc,button,field,formDialog,closeDialog,change,download,getState}=api;
  const label=(collection,type)=>collection==='products'?'produtos':type==='person'?'pessoas':'organizações';

@@ -28,6 +28,7 @@ export function createDashboardCharts({esc,money}){
  return {render(p,kind){
   const v=p.visual;if(!v)return '';
   const periodNote='Seis meses até o fim do período (ou mês atual), respeitando os filtros';
+  if(kind==='overview')return `<div class="dashchartgrid">${columns('Ritmo de atividades',periodNote,v.trend,[{key:'created',name:'Criadas',tone:'blue'},{key:'completed',name:'Realizadas',tone:'green'}])}${origins(p)}</div>`;
   if(kind==='activities'){
    return `${productivityTable(p)}<div class="dashchartgrid">${activityBars(p)}${columns('Ritmo de atividades',periodNote,v.trend,[{key:'created',name:'Criadas',tone:'blue'},{key:'completed',name:'Realizadas',tone:'green'}])}</div>`;
   }

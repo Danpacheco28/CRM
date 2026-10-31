@@ -1,5 +1,6 @@
-import {activityPipelineId,metricValue} from './operations-model.mjs?v=20261030-4';
+import {activityPipelineId,metricValue} from './operations-model.mjs?v=20261030-5';
 export const dashboardPresets=[
+ {id:'pipeline-overview',name:'Visão geral',kind:'overview',widgets:['dealCount','activeDealCount','lostCount','taskCreated','taskScheduled','taskOverdue','taskCompleted'],groupBy:'pipeline'},
  {id:'default',name:'Atividades',kind:'activities',widgets:['taskCreated','taskScheduled','taskOverdue','taskCompleted'],groupBy:'pipeline'},
  {id:'preset-commercial',name:'Funil comercial',kind:'commercial',widgets:['dealCount','activeDealCount','activeDealValue'],groupBy:'pipeline'},
  {id:'preset-results',name:'Resultados',kind:'results',widgets:['wonValue','wonCount','lostCount','conversion'],groupBy:'pipeline'}
@@ -9,6 +10,15 @@ export function dashboardDate(value){if(!value)return '';if(/^\d{4}-\d{2}-\d{2}(
 export function activityIsOverdue(a,now=new Date().toISOString()){return a.status==='pendente'&&dashboardDate(a.due)&&dashboardDate(a.due)<dashboardDate(now);}
 const range=(value,f)=>{const day=dashboardDate(value).slice(0,10);return !!day&&(!f.from||day>=f.from)&&(!f.to||day<=f.to);};
 const sum=rows=>Math.round(rows.reduce((n,d)=>n+d.value,0)*100)/100;
+export function pipelineMovements(s,pipelineId,f={}){
+ const created=new Set(),incoming=new Set(),outgoing=new Set();let unknownOrigin=0;
+ for(const d of s.deals){if(f.owner&&d.owner!==f.owner)continue;const visits=d.stageVisits||[],birth=d.stageTrackingComplete===true?visits[0]?.pipelineId:'';
+  if(pipelineId&&birth===pipelineId&&range(d.created,f))created.add(d.id);
+  if(!birth&&d.pipelineId===pipelineId&&range(d.created,f))unknownOrigin++;
+  for(let i=1;i<visits.length;i++){const from=visits[i-1],to=visits[i];if(from.pipelineId===to.pipelineId||!range(to.at,f))continue;if(from.pipelineId===pipelineId)outgoing.add(d.id);if(to.pipelineId===pipelineId)incoming.add(d.id);}
+ }
+ return {created:created.size,incoming:incoming.size,outgoing:outgoing.size,unknownOrigin};
+}
 export const dashboardActivityTypes=['Email','Ligação','WhatsApp','Proposta','Reunião','Solicitação de documentos','Análise da operadora','Pagamento pendente'];
 const normalizeLabel=v=>String(v||'').normalize('NFD').replace(/[\u0300-\u036f]/g,'').toLowerCase().replace(/^\s*\d+[\s.\-]*/,'').replace(/[^a-z0-9]/g,'');
 const activityLabel=a=>{const raw=String(a.type||'').trim();if(!raw)return 'Sem tipo';const aliases={email:'Email',ligacao:'Ligação',whatsapp:'WhatsApp',proposta:'Proposta',reuniao:'Reunião',solicitacaodedocumentos:'Solicitação de documentos',analisedaoperadora:'Análise da operadora',pgpendente:'Pagamento pendente',pagamentopendente:'Pagamento pendente',assuntosdop:'Assuntos DOP'};return aliases[normalizeLabel(raw)]||raw;};
@@ -41,7 +51,7 @@ export function pipelineDashboard(s,f={},now=new Date().toISOString()){
   const tasks={created:activities.filter(a=>range(a.created,f)),completed:activities.filter(a=>a.status==='concluida'&&range(a.completedAt||a.updated,f)),overdue:activities.filter(a=>activityIsOverdue(a,now)&&range(a.due,f)),pending:activities.filter(a=>a.status==='pendente'&&range(a.due,f))};
   const deals=s.deals.filter(d=>d.pipelineId===id&&(!f.owner||d.owner===f.owner));const created=deals.filter(d=>range(d.created,f)),active=created.filter(d=>d.status==='ativo'),won=deals.filter(d=>d.status==='ganho'&&range(d.wonAt||d.closedAt||d.updated||d.created,f)),lost=deals.filter(d=>d.status==='perdido'&&range(d.closedAt||d.updated||d.created,f));
   const stages=(p?.stages||[]).map(st=>({id:st.id,name:st.name,count:active.filter(d=>d.stageId===st.id).length,value:sum(active.filter(d=>d.stageId===st.id))}));
-  return {client:clientMetrics(activities,created,p,f,now),visual:chartData(activities,created,active,won,lost,f,now),id,name:p?.name||'Sem pipeline',type:p?.type||'',tasks:{created:tasks.created.length,completed:tasks.completed.length,overdue:tasks.overdue.length,pending:tasks.pending.length,unknownCreated:activities.filter(a=>!a.created).length,estimatedCompleted:tasks.completed.filter(a=>!a.completedAt).length},createdDeals:created.length,activeDeals:active.length,activeValue:sum(active),wonCount:won.length,wonValue:sum(won),lostCount:lost.length,lostValue:sum(lost),conversion:won.length+lost.length?Math.round(won.length/(won.length+lost.length)*1000)/10:0,stages,attention:tasks.overdue.sort((a,b)=>a.due.localeCompare(b.due)).slice(0,5).map(a=>({id:a.id,title:a.title,due:a.due,owner:a.owner})),next:tasks.pending.filter(a=>!activityIsOverdue(a,now)).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,5).map(a=>({id:a.id,title:a.title,due:a.due,owner:a.owner}))};
+  return {movements:pipelineMovements(s,id,f),client:clientMetrics(activities,created,p,f,now),visual:chartData(activities,created,active,won,lost,f,now),id,name:p?.name||'Sem pipeline',type:p?.type||'',tasks:{created:tasks.created.length,completed:tasks.completed.length,overdue:tasks.overdue.length,pending:tasks.pending.length,unknownCreated:activities.filter(a=>!a.created).length,estimatedCompleted:tasks.completed.filter(a=>!a.completedAt).length},createdDeals:created.length,activeDeals:active.length,activeValue:sum(active),wonCount:won.length,wonValue:sum(won),lostCount:lost.length,lostValue:sum(lost),conversion:won.length+lost.length?Math.round(won.length/(won.length+lost.length)*1000)/10:0,stages,attention:tasks.overdue.sort((a,b)=>a.due.localeCompare(b.due)).slice(0,5).map(a=>({id:a.id,title:a.title,due:a.due,owner:a.owner})),next:tasks.pending.filter(a=>!activityIsOverdue(a,now)).sort((a,b)=>a.due.localeCompare(b.due)).slice(0,5).map(a=>({id:a.id,title:a.title,due:a.due,owner:a.owner}))};
  }).filter(Boolean);
 }
 export function dashboardMetric(s,metric,f={},now=new Date().toISOString()){

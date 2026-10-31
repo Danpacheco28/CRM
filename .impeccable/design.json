@@ -1,6 +1,6 @@
 {
   "schemaVersion": 2,
-  "generatedAt": "2026-10-30T23:56:48.666Z",
+  "generatedAt": "2026-10-31T00:11:11.155Z",
   "title": "Design System: Poliniza CRM — Operação comercial",
   "extensions": {
     "shadows": [
@@ -229,6 +229,13 @@
       "description": "Total validado e ações previstas antecedem a confirmação explícita; exemplo sem dados reais.",
       "html": "<div class=\"ds-importsummary\" role=\"status\"><strong>0 linhas validadas</strong><span>0 novos cadastros</span><span>0 atualizações</span></div>",
       "css": ".ds-importsummary{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#302b36);display:flex;gap:16px;flex-wrap:wrap;align-items:center;padding:16px;background:var(--surface,#f7f6f8);border:1px solid var(--line,#e3dfe7);border-radius:8px;margin:22px 0 16px}@media(max-width:760px){.ds-importsummary{gap:10px;font-size:12px}.ds-importsummary strong{flex-basis:100%}}"
+    },
+    {
+      "name": "Seletor exclusivo de pipeline",
+      "kind": "custom",
+      "description": "Contexto obrigat?rio acima das vis?es; escolha preservada entre filtros e vis?es, sem op??o agregada.",
+      "html": "<section class=\"ds-pipelinepicker\"><label for=\"ds-pipeline\">Pipeline do relat?rio<select id=\"ds-pipeline\"><option>Pipeline de leads ? Leads</option><option>Pipeline comercial ? Neg?cios</option><option>Sem pipeline ? atividades</option></select></label><p>Todos os indicadores abaixo pertencem somente ao pipeline selecionado.</p></section>",
+      "css": ".ds-pipelinepicker{font:14px Arial,Helvetica,sans-serif;color:var(--ink,#302b36);display:flex;align-items:center;gap:24px;padding:20px 22px;margin-bottom:22px;background:var(--paper,#fff);border:1px solid var(--line,#e3dfe7);border-radius:8px}.ds-pipelinepicker label{display:grid;gap:10px;flex:0 1 440px;font-size:13px;font-weight:600}.ds-pipelinepicker select{font:600 14px Arial,Helvetica,sans-serif;width:100%;min-height:44px;border:1px solid var(--accent,#602878);border-radius:6px;padding:9px 11px;background:var(--paper,#fff);color:var(--ink,#302b36);cursor:pointer}.ds-pipelinepicker select:focus-visible{outline:3px solid #80409b;outline-offset:3px}.ds-pipelinepicker p{color:var(--muted,#68616e);font-size:12px;line-height:1.7;max-width:40ch;margin:20px 0 0}@media(max-width:760px){.ds-pipelinepicker{display:block;padding:18px 16px}.ds-pipelinepicker p{margin:14px 0 0;max-width:none}}"
     }
   ],
   "narrative": {
@@ -273,7 +280,7 @@
       },
       {
         "name": "Pipeline Context",
-        "body": "Nome do pipeline, recorte e sentido da data permanecem visíveis junto aos valores. Pipelines são separados por ID, inclusive quando seus nomes coincidem; atividades sem vínculo aparecem em “Sem pipeline”. Cores semânticas reforçam os rótulos, sem substituí-los.",
+        "body": "O seletor superior limita dashboard e relatório a um pipeline por vez e mantém a escolha ao limpar filtros ou trocar visão. Nome, recorte e sentido da data permanecem junto aos valores. Pipelines são separados por ID, inclusive quando seus nomes coincidem; “Sem pipeline” é um grupo isolado de atividades sem vínculo. Criação na origem, entradas, saídas e carteira atual têm rótulos distintos. Cores semânticas reforçam os rótulos, sem substituí-los.",
         "section": "components"
       },
       {

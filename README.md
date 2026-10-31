@@ -107,3 +107,5 @@ Em Contatos e Produtos, use Importar planilha para baixar o modelo CSV UTF-8 e v
 Os dashboards prontos incluem cartões com cores semânticas, roscas de situação/conversão, barras mensais, distribuição por etapa, ranking de responsáveis e ticket médio. Gráficos usam apenas dados reais do pipeline e oferecem tabelas com valores exatos.
 
 Produtividade inclui Criadas, Agendadas, Atrasadas e Realizadas por tipo de atividade. Funil comercial inclui passagens/permanência/perdas, previsão ponderada e origem em barras horizontais. Histórico anterior é sinalizado como parcial; novas movimentações são registradas sem inferir passagens antigas. Veja os critérios no guia de importação/dashboards.
+
+Dashboards agora abrem um pipeline por vez, com seletor no topo e Visão geral de negócios, transferências e atividades, inclusive para leads. A escolha é preservada entre visões e ao limpar filtros. Criações na origem e carteira atual têm rótulos diferentes; transferências não são novas criações no destino.

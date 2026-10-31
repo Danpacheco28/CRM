@@ -1,10 +1,10 @@
-import {createImportUI} from './import-ui.mjs?v=20261030-4';
-import {recordChanges,recordGuards} from './record-sync.mjs?v=20261030-4';
+import {createImportUI} from './import-ui.mjs?v=20261030-5';
+import {recordChanges,recordGuards} from './record-sync.mjs?v=20261030-5';
 import {connection} from './connection.mjs?v=20261023-1';
 import {connectInternal} from './account-client.mjs?v=20261023-1';
 import {createAccountsUI} from './accounts-ui.mjs?v=20261025-1';
-import {createOperationsUI} from './operations-ui.mjs?v=20261030-4';
-import {STORAGE_KEY,LEGACY_KEY,uid,today,emptyState,loadState,validateState,commit,newPipeline,configurePipeline,deletePipeline,saveEntity,deleteEntity,audit,quoteTotal,convertQuoteToOrder} from './model.mjs?v=20261030-4';
+import {createOperationsUI} from './operations-ui.mjs?v=20261030-5';
+import {STORAGE_KEY,LEGACY_KEY,uid,today,emptyState,loadState,validateState,commit,newPipeline,configurePipeline,deletePipeline,saveEntity,deleteEntity,audit,quoteTotal,convertQuoteToOrder} from './model.mjs?v=20261030-5';
 const $=s=>document.querySelector(s);
 const esc=v=>String(v??'').replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const money=n=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(n||0);
